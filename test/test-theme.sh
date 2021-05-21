@@ -1,5 +1,6 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039
+xrc json
 scm_prompt_info() {
 	local SCM SCM_GIT='git' SCM_P4='p4' SCM_HG='hg' SCM_SVN='svn'
 		scm_prompt_char
