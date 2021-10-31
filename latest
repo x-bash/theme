@@ -1,0 +1,75 @@
+# shellcheck shell=sh disable=SC3043
+
+xrc param/v0
+
+___x_cmd_theme_control(){
+    param <<A
+subcommands:
+    ls          "list all theme"
+    use         "use theme"
+    rollback    "use last theme"
+A
+
+    if [ -z "$PARAM_SUBCMD" ]; then
+        ___x_cmd_theme_control help
+        return 0
+    fi
+
+    "___x_cmd_theme_control_${PARAM_SUBCMD}" "$@"
+}
+
+___x_cmd_theme_cache(){
+    local CACHE="$___X_CMD_ROOT/.tmp/theme/index.yml"
+    if ! ___x_cmd_curl_gitx "x-cmd" "theme/index.yml"; then
+        local code=$?
+        printf "%s\n" "Fail to get index file."
+        return "$code"
+    fi
+}
+
+___x_cmd_theme_cache_update(){
+    local ___XRC_UPDATE=1
+    ___x_cmd_theme_cache
+}
+
+___x_cmd_theme_ls() {
+    if ! ___x_cmd_theme_cache; then
+        return
+    fi
+
+    awk '{ print $1; }' <"$CACHE"
+}
+
+___x_cmd_theme_use(){
+    local name="${1:?Provide theme name}"
+
+    if ! ___x_cmd_theme_cache; then
+        return
+    fi
+
+    ___x_cmd_theme_ls | awk -v name="$name" '
+$1=name{ code=1; exit 0; };
+END{
+    if (code==1) exit 0
+    else exit 1
+}'
+
+    local code=$?
+    if [ "$code" != 0 ]; then
+        return $code
+    fi
+
+    local CACHE="$___X_CMD_ROOT/.tmp/theme/$name"
+    if ! ___x_cmd_curl_gitx "x-cmd" "theme/$name"; then
+        local code=$?
+        printf "%s\n" "Fail to get index file."
+        return "$code"
+    fi
+
+    xrc "$CACHE"
+}
+
+___x_cmd_theme_rollback(){
+    :
+}
+
