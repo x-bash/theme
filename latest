@@ -3,15 +3,17 @@
 xrc param/v0
 
 ___x_cmd_theme_control(){
-    param <<A
+    param:dsl <<A
 subcommands:
     ls          "list all theme"
     use         "use theme"
     rollback    "use last theme"
 A
 
+    # echo "hi"
+
     if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_theme_control help
+        # ___x_cmd_theme_control _param_help_doc
         return 0
     fi
 
