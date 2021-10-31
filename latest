@@ -9,11 +9,10 @@ subcommands:
     use         "use theme"
     rollback    "use last theme"
 A
-
-    # echo "hi"
+    param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        # ___x_cmd_theme_control _param_help_doc
+        ___x_cmd_theme_control _param_help_doc
         return 0
     fi
 
@@ -34,7 +33,7 @@ ___x_cmd_theme_cache_update(){
     ___x_cmd_theme_cache
 }
 
-___x_cmd_theme_ls() {
+___x_cmd_theme_control_ls() {
     if ! ___x_cmd_theme_cache; then
         return
     fi
@@ -42,7 +41,7 @@ ___x_cmd_theme_ls() {
     awk '{ print $1; }' <"$CACHE"
 }
 
-___x_cmd_theme_use(){
+___x_cmd_theme_control_use(){
     local name="${1:?Provide theme name}"
 
     if ! ___x_cmd_theme_cache; then
@@ -71,7 +70,7 @@ END{
     xrc "$CACHE"
 }
 
-___x_cmd_theme_rollback(){
+___x_cmd_theme_control_rollback(){
     :
 }
 
