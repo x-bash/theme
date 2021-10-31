@@ -45,8 +45,22 @@ ___x_cmd_theme_control_ls() {
     fi
 }
 
+
+xrc theme/_v0/lib
+
 ___x_cmd_theme_control_use(){
-    local name="${1:?Provide theme name}"
+    local name="${1}"
+
+    case "$name" in
+        "")
+            ___X_CMD_THEME_LOAD_THEME "$(xrc which theme/_v0/ice)"
+            return
+            ;;
+        */*)
+            ___X_CMD_THEME_LOAD_THEME "$(xrc which "$name")"
+            return
+            ;;
+    esac
 
     ___x_cmd_theme_control_ls | awk -v name="$name" '
 $1=name{ code=1; exit 0; };
@@ -62,7 +76,7 @@ END{
 
     local fp
     if fp="$(___x_cmd_theme_which "$name")"; then
-        xrc "$fp"
+        ___X_CMD_THEME_LOAD_THEME "$fp"
     fi
     return 1
 }

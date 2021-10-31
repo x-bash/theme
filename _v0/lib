@@ -10,7 +10,7 @@
   # @example2: ___X_CMD_THEME_COLOR blod
   # @example3: ___X_CMD_THEME_COLOR => ___X_CMD_THEME_COLOR reset
 ###
-## Enable our easy to read Colour Flags as long as --no-colors hasn't been passed or the NO_COLOR Env Variable is set. 
+## Enable our easy to read Colour Flags as long as --no-colors hasn't been passed or the NO_COLOR Env Variable is set.
 ## NOTE: the NO_COLOR env variable is from: https://no-color.org/
 if [[ ! $* == *--no-color* && -z "${NO_COLOR}" ]]
 then
@@ -412,7 +412,7 @@ ___X_CMD_THEME_GET_PROMPT_INFO_EXE() {
 	P4_EXE=$(which p4 2>/dev/null || true)
 	SVN_EXE=$(which svn 2>/dev/null || true)
 	if [[ -f .git/HEAD ]] && [[ -x "$GIT_EXE" ]]; then
-		printf $VLAUE_GIT 
+		printf $VLAUE_GIT
 	elif [[ -x "$GIT_EXE" ]] && [[ -n "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ]]; then
 		printf $VLAUE_GIT
 	elif [[ -x "$P4_EXE" ]] && [[ -n "$(p4 set P4CLIENT 2>/dev/null)" ]]; then
@@ -454,14 +454,12 @@ ___X_CMD_THEME_FORMAT_PROMPT() {
 
 # load theme file
 ___X_CMD_THEME_LOAD_THEME() {
-if [ -z "${___X_CMD_THEME_NAME}" ]; then
-	___X_CMD_THEME_NAME='ice'
-fi
-local ___X_CMD_THEME_FILE_PATH=./themes
-local ___X_CMD_THEME_FILE_NAME="$(ls $___X_CMD_THEME_FILE_PATH | grep $___X_CMD_THEME_NAME)"
-. $___X_CMD_THEME_FILE_PATH/$___X_CMD_THEME_FILE_NAME
+  if [ -z "${___X_CMD_THEME_NAME}" ]; then
+    ___X_CMD_THEME_NAME='ice'
+  fi
+
+  . "${1:?Provide theme file}"
+  ___X_CMD_THEME_FORMAT_PROMPT
 }
 
 
-___X_CMD_THEME_LOAD_THEME
-___X_CMD_THEME_FORMAT_PROMPT
