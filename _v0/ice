@@ -2,10 +2,10 @@
 # shellcheck disable=SC2039
 
 ______x_cmd_theme_prompt_get_info(){
-    case "$(___x_cmd_theme_git_get_prompt_info_exe)" in
+    ___x_cmd_theme_scm && case "${___X_CMD_THEME_SCM_TYPE}" in
         git)
             # printf "${prefix}git:${___X_CMD_THEME_FG_CYAN}$(___x_cmd_theme_git_get_prompt_info_value)${___X_CMD_THEME_RESET} \n"
-            printf "%s" "${PREFIX:-on} git:$(___x_cmd_theme_style fg cyan "$(___x_cmd_theme_git_get_prompt_info_value)")"
+            printf "%s" "${PREFIX:-on} git:$(___x_cmd_theme_style fg cyan "$___X_CMD_THEME_SCM_INFO")"
         ;;
         *)
             return
