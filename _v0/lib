@@ -98,9 +98,11 @@ ___x_cmd_theme_load_format() {
 
     if [ -n "$ZSH_VERSION" ]; then
 		setopt PROMPT_SUBST
-        PROMPT="$(______x_cmd_theme_prompt_format_wrapper \u \W \w \d \t \T \A \@ \h \H)"
+        # PROMPT interprete %n... after evaluation.
+        PROMPT="$(___x_cmd_theme_prompt_format)"
     else
-	    PS1="\$(______x_cmd_theme_prompt_format_wrapper \"\u\" \"\W\" \"\w\" \"\d\" \"\t\" \"\T\" \"\A\" \"\@\" \"\h\" \"\H")"
+        # PS1 interprete \u before evaluation.
+	    PS1="\$(______x_cmd_theme_prompt_format_wrapper \"\u\" \"\W\" \"\w\" \"\d\" \"\t\" \"\T\" \"\A\" \"\@\" \"\h\" \"\H\")"
 	fi
 }
 

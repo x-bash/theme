@@ -95,7 +95,7 @@ ___X_CMD_THEME_FULL_HOST='%M'
 
 else
 
-___X_CMD_THEME_USER='\u'
+___X_CMD_THEME_USER='\\u'
 
 # Path
 ___X_CMD_THEME_PATH='\W';
