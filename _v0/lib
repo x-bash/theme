@@ -21,35 +21,57 @@ ___x_cmd_theme_git_get_short_sha() {
     git rev-parse --short HEAD 2> /dev/null
 }
 
+# Section: scm
+___x_cmd_theme_scm_git_bin(){
+    printf "%s" "${___X_CMD_THEME_SCM_GIT_BIN:=$(command -v git)}"
+}
+
+___x_cmd_theme_scm_hg_bin(){
+    printf "%s" "${___X_CMD_THEME_SCM_GIT_BIN:=$(command -v hg)}"
+}
+
+___x_cmd_theme_scm_p4_bin(){
+    printf "%s" "${___X_CMD_THEME_SCM_GIT_BIN:=$(command -v p4)}"
+}
+
+___x_cmd_theme_scm_svn_bin(){
+    printf "%s" "${___X_CMD_THEME_SCM_GIT_BIN:=$(command -v svn)}"
+}
+
 ## Set up common folder info variables
 ___x_cmd_theme_git_get_prompt_info_exe() {
-    local VALUE_NONE='NONE'
-    if [[ -n "$___X_CMD_THEME_NO_CHECK_EXE" && "$___X_CMD_THEME_NO_CHECK_EXE" == true ]]; then
-        printf $VALUE_NONE
+    if [ -n "$___X_CMD_THEME_NO_CHECK_EXE" ] && [ "$___X_CMD_THEME_NO_CHECK_EXE" = true ]; then
+        printf "NONE"
+        return
     fi
-    local GIT_EXE P4_EXE HG_EXE SVN_EXE
-    local VLAUE_GIT='git' VLAUE_P4='p4' VLAUE_HG='hg' VLAUE_SVN='svn'
-    GIT_EXE=$(which git 2>/dev/null || true)
-    HG_EXE=$(which hg 2>/dev/null || true)
-    P4_EXE=$(which p4 2>/dev/null || true)
-    SVN_EXE=$(which svn 2>/dev/null || true)
-    if [[ -f .git/HEAD ]] && [[ -x "$GIT_EXE" ]]; then
-        printf $VLAUE_GIT
-    elif [[ -x "$GIT_EXE" ]] && [[ -n "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ]]; then
-        printf $VLAUE_GIT
-    elif [[ -x "$P4_EXE" ]] && [[ -n "$(p4 set P4CLIENT 2>/dev/null)" ]]; then
-        printf $VLAUE_P4
-    elif [[ -d .hg ]] && [[ -x "$HG_EXE" ]]; then
-        printf $VLAUE_HG
-    elif [[ -x "$HG_EXE" ]] && [[ -n "$(hg root 2>/dev/null)" ]]; then
-        printf $VLAUE_HG
-    elif [[ -d .svn ]] && [[ -x "$SVN_EXE" ]]; then
-        printf $VLAUE_SVN
-    elif [[ -x "$SVN_EXE" ]] && [[ -n "$(svn info --show-item wc-root 2>/dev/null)" ]]; then
-        printf $VLAUE_SVN
-    else
-        printf $VALUE_NONE
+
+    if [ -z "$(___x_cmd_theme_scm_git_bin)" ]; then
+        if [ -f .git/HEAD ] || [ -n "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ]; then
+            printf "git"
+            return
+        fi
     fi
+
+    if [ -z "$(___x_cmd_theme_scm_svn_bin)" ]; then
+        if [ -d .svn ] || [ -n "$(svn info --show-item wc-root 2>/dev/null)" ]; then
+            printf "svn"
+            return
+        fi
+    fi
+
+    if [ -z "$(___x_cmd_theme_scm_p4_bin)" ] && [ -n "$(p4 set P4CLIENT 2>/dev/null)" ]; then
+        printf "p4"
+        return
+    fi
+
+    if [ -z "$(___x_cmd_theme_scm_hg_bin)" ]; then
+        if [ -d .hg ] || [ -n "$(hg root 2>/dev/null)" ]; then
+            printf "svn"
+            return
+        fi
+    fi
+
+    printf "NONE"
 }
 
 ___x_cmd_theme_scm() {
@@ -63,6 +85,7 @@ ___x_cmd_theme_scm() {
         *)          ___X_CMD_THEME_SCM_TYPE= ;;
     esac
 }
+# EndSection
 
 
 # shellcheck disable=SC2034
