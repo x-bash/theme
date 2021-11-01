@@ -13,7 +13,7 @@
 ## Enable our easy to read Colour Flags as long as --no-colors hasn't been passed or the NO_COLOR Env Variable is set.
 ## NOTE: the NO_COLOR env variable is from: https://no-color.org/
 
-# Section: ___X_CMD_THEME_COLOR zsh version
+# Section: ___X_CMD_THEME_COLOR
 # zsh https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Visual-effects
 # TODO: here
 if [[ ! "$*" = *--no-color* ]] && [ -z "${NO_COLOR}" ]; then
@@ -68,8 +68,9 @@ fi
 fi
 # EndSection
 
+# Section: ___X_CMD_THEME_COLOR
 ###
-  # @description: set up color
+# @description: set up color
 ###
 ___X_CMD_THEME_NEWLINE=$'\n'
 
@@ -112,4 +113,4 @@ ___X_CMD_THEME_HOST='\h';
 ___X_CMD_THEME_FULL_HOST='\H';
 
 fi
-
+# EndSection
