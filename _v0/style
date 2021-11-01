@@ -19,19 +19,29 @@
 if [[ ! "$*" = *--no-color* ]] && [ -z "${NO_COLOR}" ]; then
 
 if [ -n "$ZSH_VERSION" ]; then
-___x_cmd_theme_style() {
-    autoload -U colors && colors
+
+___x_cmd_theme_style(){
     local subcmd="$1"; shift
-    case "$subcmd" in
-        fg)           printf "%s" "%{\$fg[$1]%}"; shift ;;
-        bfg)          printf "%s" "%{\$fg_bold[$1]%}"; shift ;;
-        bg)           printf "%s" "%{\$bg[$1]%}"; shift ;;
-        ibg)          printf "%s" "%{\$bg_no_bold[$2]%}"; shift ;;
-        bold)         printf "%s" "%B"; ;;
-        underline)    printf "%s" "%U"; ;;
-        reset)        printf "%s" "%{\$reset_color%}" ;;
-        *)            printf "%s" "%{\$reset_color%}" ;;
-    esac
+    local s="$subcmd"
+    local cur
+    while true; do
+        cur="${s%%,*}"
+        [ "$cur" = "" ] && break
+
+        case "$cur" in
+            black|red|green|yellow|blue|magenta|cyan|white)         printf "%s" "%{\$fg[$cur]%}" ;;
+            bfg-*)                                                  printf "%s" "%{\$fg_bold[${cur#bfg-}]%}" ;;
+            bg-*)                                                   printf "%s" "%{\$bg[${cur#bg-}]%}" ;;
+            ibg-*)                                                  printf "%s" "%{\$bg_no_bold[${cur#ibg-}]%}" ;;
+            bold)                                                   printf "%s" "%B" ;;
+            underline)                                              printf "%s" "%U" ;;
+            reset)                                                  printf "%s" "%{\$reset_color%}" ;;
+            *)                                                      printf "%s" "%{\$reset_color%}" ;;
+        esac
+
+        [ "$cur" = "$s" ] && break
+        s="${s#*,}"
+    done
 
     if [ "$#" -ge 1 ]; then
         printf "%s" "$@%{\$reset_color%}"
