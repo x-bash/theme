@@ -30,6 +30,7 @@ ___x_cmd_theme_style(){
 
         case "$cur" in
             black|red|green|yellow|blue|magenta|cyan|white)         printf "%s" "%{\$fg[$cur]%}" ;;
+            fg-*)                                                   printf "%s" "%{\$fg[$cur]%}" ;;
             bfg-*)                                                  printf "%s" "%{\$fg_bold[${cur#bfg-}]%}" ;;
             bg-*)                                                   printf "%s" "%{\$bg[${cur#bg-}]%}" ;;
             ibg-*)                                                  printf "%s" "%{\$bg_no_bold[${cur#ibg-}]%}" ;;
