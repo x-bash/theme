@@ -66,22 +66,20 @@ ___x_cmd_theme_git_get_prompt_info_value() {
 	{ [[ $___PROMPT_INFO_EXE == $VLAUE_SVN ]] && svn_prompt_info && return; } || true
 }
 
-# prompt format
-___X_CMD_THEME_FORMAT_PROMPT() {
-	if [ -n "$ZSH_VERSION" ]; then
-		 setopt PROMPT_SUBST
-	fi
-	PS1="$(___X_CMD_THEME_PROMPT_FORMAT)"
-}
-
 # load theme file
-___X_CMD_THEME_LOAD_THEME() {
-  if [ -z "${___X_CMD_THEME_NAME}" ]; then
-    ___X_CMD_THEME_NAME='ice'
-  fi
+___x_cmd_theme_load_format() {
+    if [ -z "${___X_CMD_THEME_NAME}" ]; then
+        ___X_CMD_THEME_NAME='ice'
+    fi
 
-  . "${1:?Provide theme file}"
-  ___X_CMD_THEME_FORMAT_PROMPT
+    . "${1:?Provide theme file}"
+
+    if [ -n "$ZSH_VERSION" ]; then
+		setopt PROMPT_SUBST
+        PROMPT="$(___x_cmd_theme_prompt_format)"
+    else
+	    PS1="$(___x_cmd_theme_prompt_format)"
+	fi
 }
 
 

@@ -53,11 +53,11 @@ ___x_cmd_theme_control_use(){
 
     case "$name" in
         ice|"")
-            ___X_CMD_THEME_LOAD_THEME "$(xrc which theme/_v0/ice)"
+            ___x_cmd_theme_load_format "$(xrc which theme/_v0/ice)"
             return
             ;;
         */*)
-            ___X_CMD_THEME_LOAD_THEME "$(xrc which "$name")"
+            ___x_cmd_theme_load_format "$(xrc which "$name")"
             return
             ;;
     esac
@@ -76,7 +76,7 @@ END{
 
     local fp
     if fp="$(___x_cmd_theme_which "$name")"; then
-        ___X_CMD_THEME_LOAD_THEME "$fp"
+        ___x_cmd_theme_load_format "$fp"
     fi
     return 1
 }

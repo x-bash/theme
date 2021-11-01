@@ -15,7 +15,7 @@ ___X_CMD_THEME_PROMPT_GET_INFO(){
 }
 
 # Prompt format:
-___X_CMD_THEME_PROMPT_FORMAT(){
+___x_cmd_theme_prompt_format(){
   local PRE_ICON='💠'
   local SYMBOL='ᐅ'
   local USERNAME="$(___x_cmd_theme_style fg cyan)${___X_CMD_THEME_USER}$(___x_cmd_theme_style)"
