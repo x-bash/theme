@@ -1,12 +1,12 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039
 
-___X_CMD_THEME_PROMPT_GET_INFO(){
+______x_cmd_theme_prompt_get_info(){
 
   case "$(___x_cmd_theme_git_get_prompt_info_exe)" in
     git)
-      # printf "${PREFIX}git:${___X_CMD_THEME_FG_CYAN}$(___x_cmd_theme_git_get_prompt_info_value)${___X_CMD_THEME_RESET} \n"
-      printf "%s" "${PREFIX}git:$(___x_cmd_theme_style fg cyan)$(___x_cmd_theme_git_get_prompt_info_value)$(___x_cmd_theme_style)"
+      # printf "${prefix}git:${___X_CMD_THEME_FG_CYAN}$(___x_cmd_theme_git_get_prompt_info_value)${___X_CMD_THEME_RESET} \n"
+      printf "%s" "${prefix}git:$(___x_cmd_theme_style fg cyan)$(___x_cmd_theme_git_get_prompt_info_value)$(___x_cmd_theme_style)"
     ;;
     *)
       return
@@ -16,17 +16,18 @@ ___X_CMD_THEME_PROMPT_GET_INFO(){
 
 # Prompt format:
 ___x_cmd_theme_prompt_format(){
-  local PRE_ICON='💠'
-  local SYMBOL='ᐅ'
-  local USERNAME="$(___x_cmd_theme_style fg cyan)${___X_CMD_THEME_USER}$(___x_cmd_theme_style)"
-  local PROMPT_PATH="$(___x_cmd_theme_style bfg yellow)${___X_CMD_THEME_FULL_PATH}$(___x_cmd_theme_style)"
-  local PROMPT_TIME="[${___X_CMD_THEME_TIME_24_H_M_S}]"
+  local pre_icon='💠'
+  local symbol='ᐅ'
+  local username="$(___x_cmd_theme_style fg cyan)${___X_CMD_THEME_USER}$(___x_cmd_theme_style)"
+  local cwd="$(___x_cmd_theme_style bfg yellow)${___X_CMD_THEME_FULL_PATH}$(___x_cmd_theme_style)"
+  local time="[${___X_CMD_THEME_TIME_24_H_M_S}]"
 
-  local PREFIX=" $(___x_cmd_theme_style)on "
-  local PREFIX_INFO=":$(___x_cmd_theme_style fg cyan)"
-  local SUFFIX="$(___x_cmd_theme_style)"
+  local prefix=" $(___x_cmd_theme_style)on "
+  local prefix_info=":$(___x_cmd_theme_style fg cyan)"
+  local suffix="$(___x_cmd_theme_style)"
+
   printf "%s" "
-${PRE_ICON}${USERNAME} ${PROMPT_PATH} \$(___X_CMD_THEME_PROMPT_GET_INFO) ${PROMPT_TIME}
-$(___x_cmd_theme_style bfg green)${SYMBOL}$(___x_cmd_theme_style) "
+${pre_icon}${username} ${cwd} $(______x_cmd_theme_prompt_get_info) ${time}
+$(___x_cmd_theme_style bfg green)${symbol}$(___x_cmd_theme_style) "
 
 }
