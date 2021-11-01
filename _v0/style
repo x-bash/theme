@@ -94,10 +94,10 @@ ___X_CMD_THEME_FULL_PATH='%~'
 
 # Date
 ___X_CMD_THEME_DATE='%D';
-___X_CMD_THEME_TIME_24_H_M_S='%*';
-___X_CMD_THEME_TIME_12_H_M_S='%D{%L:%M:%S}';
-___X_CMD_THEME_TIME_24_H_M='%T';
-___X_CMD_THEME_TIME_12_H_M='%@';
+___X_CMD_THEME_TIME_H_M_S='%*';
+___X_CMD_THEME_TIME_H12_M_S='%D{%L:%M:%S}';
+___X_CMD_THEME_TIME_H_M='%T';
+___X_CMD_THEME_TIME_H12_M='%@';
 
 # Host
 ___X_CMD_THEME_HOST='%m'
@@ -113,10 +113,10 @@ ___X_CMD_THEME_FULL_PATH='\w';
 
 # Date
 ___X_CMD_THEME_DATE='\d';
-___X_CMD_THEME_TIME_24_H_M_S='\t';
-___X_CMD_THEME_TIME_12_H_M_S='\T';
-___X_CMD_THEME_TIME_24_H_M='\A';
-___X_CMD_THEME_TIME_12_H_M='\@';
+___X_CMD_THEME_TIME_H_M_S='\t';
+___X_CMD_THEME_TIME_H12_M_S='\T';
+___X_CMD_THEME_TIME_H_M='\A';
+___X_CMD_THEME_TIME_H12_M='\@';
 
 # Host
 ___X_CMD_THEME_HOST='\h';
