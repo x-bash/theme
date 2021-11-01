@@ -6,7 +6,7 @@
 ###
 ## Set up git help func
  ___x_cmd_theme_git_get_friendly_ref() {
-   ___x_cmd_theme_git_get_branch || ___x_cmd_theme_git_get_tag || ___x_cmd_theme_git_get_short_sha
+    ___x_cmd_theme_git_get_branch || ___x_cmd_theme_git_get_tag || ___x_cmd_theme_git_get_short_sha
 }
 
 ___x_cmd_theme_git_get_branch() {

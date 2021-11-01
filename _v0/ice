@@ -2,32 +2,31 @@
 # shellcheck disable=SC2039
 
 ______x_cmd_theme_prompt_get_info(){
-
-  case "$(___x_cmd_theme_git_get_prompt_info_exe)" in
-    git)
-      # printf "${prefix}git:${___X_CMD_THEME_FG_CYAN}$(___x_cmd_theme_git_get_prompt_info_value)${___X_CMD_THEME_RESET} \n"
-      printf "%s" "${prefix}git:$(___x_cmd_theme_style fg cyan)$(___x_cmd_theme_git_get_prompt_info_value)$(___x_cmd_theme_style)"
-    ;;
-    *)
-      return
-    ;;
-  esac
+	case "$(___x_cmd_theme_git_get_prompt_info_exe)" in
+		git)
+			# printf "${prefix}git:${___X_CMD_THEME_FG_CYAN}$(___x_cmd_theme_git_get_prompt_info_value)${___X_CMD_THEME_RESET} \n"
+			printf "%s" "${prefix}git:$(___x_cmd_theme_style fg cyan)$(___x_cmd_theme_git_get_prompt_info_value)$(___x_cmd_theme_style)"
+		;;
+		*)
+			return
+		;;
+	esac
 }
 
 # Prompt format:
 ___x_cmd_theme_prompt_format(){
-  local pre_icon='💠'
-  local symbol='ᐅ'
-  local username="$(___x_cmd_theme_style fg cyan)${___X_CMD_THEME_USER}$(___x_cmd_theme_style)"
-  local cwd="$(___x_cmd_theme_style bfg yellow)${___X_CMD_THEME_FULL_PATH}$(___x_cmd_theme_style)"
-  local time="[${___X_CMD_THEME_TIME_24_H_M_S}]"
+	local pre_icon='💠'
+	local symbol='ᐅ'
+	local username="$(___x_cmd_theme_style fg cyan)${___X_CMD_THEME_USER}$(___x_cmd_theme_style)"
+	local cwd="$(___x_cmd_theme_style bfg yellow)${___X_CMD_THEME_FULL_PATH}$(___x_cmd_theme_style)"
+	local time="[${___X_CMD_THEME_TIME_24_H_M_S}]"
 
-  local prefix=" $(___x_cmd_theme_style)on "
-  local prefix_info=":$(___x_cmd_theme_style fg cyan)"
-  local suffix="$(___x_cmd_theme_style)"
+	local prefix=" $(___x_cmd_theme_style)on "
+	local prefix_info=":$(___x_cmd_theme_style fg cyan)"
+	local suffix="$(___x_cmd_theme_style)"
 
-  printf "%s" "
-${pre_icon}${username} ${cwd} $(______x_cmd_theme_prompt_get_info) ${time}
+	printf "%s" "
+${pre_icon} ${username} ${cwd} $(______x_cmd_theme_prompt_get_info) ${time}
 $(___x_cmd_theme_style bfg green)${symbol}$(___x_cmd_theme_style) "
 
 }
