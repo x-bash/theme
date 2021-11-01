@@ -1,6 +1,8 @@
 
 # TODO: latest
 
+# Section: scm-git
+
 ###
   # @description: set up folder info variables
 ###
@@ -20,8 +22,10 @@ ___x_cmd_theme_git_get_tag() {
 ___x_cmd_theme_git_get_short_sha() {
     git rev-parse --short HEAD 2> /dev/null
 }
+# EndSection
 
-# Section: scm
+
+# Section: scm-main
 ___x_cmd_theme_scm_git_bin(){
     printf "%s" "${___X_CMD_THEME_SCM_GIT_BIN:=$(command -v git)}"
 }
@@ -88,6 +92,7 @@ ___x_cmd_theme_scm() {
 # EndSection
 
 
+# Section: loader main function
 # shellcheck disable=SC2034
 ______x_cmd_theme_prompt_format_wrapper(){
     ___X_CMD_THEME_USER="$1"
@@ -127,5 +132,6 @@ ___x_cmd_theme_load_format() {
         PS1="\$(______x_cmd_theme_prompt_format_wrapper \"\u\" \"\W\" \"\w\" \"\d\" \"\t\" \"\T\" \"\A\" \"\@\" \"\h\" \"\H\")"
     fi
 }
+# EndSection
 
 
