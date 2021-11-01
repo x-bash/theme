@@ -3,10 +3,10 @@
 
 ___X_CMD_THEME_PROMPT_GET_INFO(){
 
-  case "$(___X_CMD_THEME_GET_PROMPT_INFO_EXE)" in
+  case "$(___x_cmd_theme_git_get_prompt_info_exe)" in
     git)
-      # printf "${PREFIX}git:${___X_CMD_THEME_FG_CYAN}$(___X_CMD_THEME_GET_PROMPT_INFO_VALUE)${___X_CMD_THEME_RESET} \n"
-      printf "%s" "${PREFIX}git:$(___X_CMD_THEME_COLOR fg cyan)$(___X_CMD_THEME_GET_PROMPT_INFO_VALUE)$(___X_CMD_THEME_COLOR)"
+      # printf "${PREFIX}git:${___X_CMD_THEME_FG_CYAN}$(___x_cmd_theme_git_get_prompt_info_value)${___X_CMD_THEME_RESET} \n"
+      printf "%s" "${PREFIX}git:$(___x_cmd_theme_style fg cyan)$(___x_cmd_theme_git_get_prompt_info_value)$(___x_cmd_theme_style)"
     ;;
     *)
       return
@@ -18,15 +18,15 @@ ___X_CMD_THEME_PROMPT_GET_INFO(){
 ___X_CMD_THEME_PROMPT_FORMAT(){
   local PRE_ICON='💠'
   local SYMBOL='ᐅ'
-  local USERNAME="$(___X_CMD_THEME_COLOR fg cyan)${___X_CMD_THEME_USER}$(___X_CMD_THEME_COLOR)"
-  local PROMPT_PATH="$(___X_CMD_THEME_COLOR bfg yellow)${___X_CMD_THEME_FULL_PATH}$(___X_CMD_THEME_COLOR)"
+  local USERNAME="$(___x_cmd_theme_style fg cyan)${___X_CMD_THEME_USER}$(___x_cmd_theme_style)"
+  local PROMPT_PATH="$(___x_cmd_theme_style bfg yellow)${___X_CMD_THEME_FULL_PATH}$(___x_cmd_theme_style)"
   local PROMPT_TIME="[${___X_CMD_THEME_TIME_24_H_M_S}]"
 
-  local PREFIX=" $(___X_CMD_THEME_COLOR)on "
-  local PREFIX_INFO=":$(___X_CMD_THEME_COLOR fg cyan)"
-  local SUFFIX="$(___X_CMD_THEME_COLOR)"
+  local PREFIX=" $(___x_cmd_theme_style)on "
+  local PREFIX_INFO=":$(___x_cmd_theme_style fg cyan)"
+  local SUFFIX="$(___x_cmd_theme_style)"
   printf "%s" "
 ${PRE_ICON}${USERNAME} ${PROMPT_PATH} \$(___X_CMD_THEME_PROMPT_GET_INFO) ${PROMPT_TIME}
-$(___X_CMD_THEME_COLOR bfg green)${SYMBOL}$(___X_CMD_THEME_COLOR) "
+$(___x_cmd_theme_style bfg green)${SYMBOL}$(___x_cmd_theme_style) "
 
 }

@@ -5,24 +5,24 @@
   # @description: set up folder info variables
 ###
 ## Set up git help func
- ___X_CMD_THEME_GET_GIT_FRIENDLY_REF() {
-   ___X_CMD_THEME_GET_GIT_BRANCH || ___X_CMD_THEME_GET_GIT_TAG || ___X_CMD_THEME_GET_SHORT_SHA
+ ___x_cmd_theme_git_get_friendly_ref() {
+   ___x_cmd_theme_git_get_branch || ___x_cmd_theme_git_get_tag || ___x_cmd_theme_git_get_short_sha
 }
 
-___X_CMD_THEME_GET_GIT_BRANCH() {
+___x_cmd_theme_git_get_branch() {
     git symbolic-ref -q --short HEAD 2> /dev/null || return 1
 }
 
-___X_CMD_THEME_GET_GIT_TAG() {
+___x_cmd_theme_git_get_tag() {
     git describe --tags --exact-match 2> /dev/null || return 1
 }
 
-___X_CMD_THEME_GET_SHORT_SHA() {
+___x_cmd_theme_git_get_short_sha() {
     git rev-parse --short HEAD 2> /dev/null
 }
 
 ## Set up common folder info variables
-___X_CMD_THEME_GET_PROMPT_INFO_EXE() {
+___x_cmd_theme_git_get_prompt_info_exe() {
 	local VALUE_NONE='NONE'
 	if [[ -n "$___X_CMD_THEME_NO_CHECK_EXE" && "$___X_CMD_THEME_NO_CHECK_EXE" == true ]]; then
 		printf $VALUE_NONE
@@ -52,11 +52,11 @@ ___X_CMD_THEME_GET_PROMPT_INFO_EXE() {
 	fi
 }
 
-___X_CMD_THEME_GET_PROMPT_INFO_VALUE() {
-	local ___PROMPT_INFO_EXE="$(___X_CMD_THEME_GET_PROMPT_INFO_EXE)"
+___x_cmd_theme_git_get_prompt_info_value() {
+	local ___PROMPT_INFO_EXE="$(___x_cmd_theme_git_get_prompt_info_exe)"
 	local VLAUE_GIT='git' VLAUE_P4='p4' VLAUE_HG='hg' VLAUE_SVN='svn'
 	if [[ $___PROMPT_INFO_EXE == $VLAUE_GIT ]]; then
-    printf "$(___X_CMD_THEME_GET_GIT_FRIENDLY_REF)"
+    printf "$(___x_cmd_theme_git_get_friendly_ref)"
 		return
 	fi
 	printf ""
