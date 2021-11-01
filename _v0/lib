@@ -45,26 +45,26 @@ ___x_cmd_theme_git_get_prompt_info_exe() {
         return
     fi
 
-    if [ -z "$(___x_cmd_theme_scm_git_bin)" ]; then
+    if [ -n "$(___x_cmd_theme_scm_git_bin)" ]; then
         if [ -f .git/HEAD ] || [ -n "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ]; then
             printf "git"
             return
         fi
     fi
 
-    if [ -z "$(___x_cmd_theme_scm_svn_bin)" ]; then
+    if [ -n "$(___x_cmd_theme_scm_svn_bin)" ]; then
         if [ -d .svn ] || [ -n "$(svn info --show-item wc-root 2>/dev/null)" ]; then
             printf "svn"
             return
         fi
     fi
 
-    if [ -z "$(___x_cmd_theme_scm_p4_bin)" ] && [ -n "$(p4 set P4CLIENT 2>/dev/null)" ]; then
+    if [ -n "$(___x_cmd_theme_scm_p4_bin)" ] && [ -n "$(p4 set P4CLIENT 2>/dev/null)" ]; then
         printf "p4"
         return
     fi
 
-    if [ -z "$(___x_cmd_theme_scm_hg_bin)" ]; then
+    if [ -n "$(___x_cmd_theme_scm_hg_bin)" ]; then
         if [ -d .hg ] || [ -n "$(hg root 2>/dev/null)" ]; then
             printf "svn"
             return
