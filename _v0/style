@@ -20,6 +20,19 @@ if [[ ! "$*" = *--no-color* ]] && [ -z "${NO_COLOR}" ]; then
 
 if [ -n "$ZSH_VERSION" ]; then
 autoload -U colors && colors
+
+______x_cmd_theme_setup_zsh_color(){
+    typeset -AHg FG BG
+    for color in {000..255}; do
+        FG[$color]="%{[38;5;${color}m%}"
+        BG[$color]="%{[48;5;${color}m%}"
+    done
+}
+
+if [ -z $FG[100] ];then
+    ______x_cmd_theme_setup_zsh_color
+fi
+
 ___x_cmd_theme_style(){
     while [ $# -gt 0 ]; do
         case "$1" in
@@ -109,6 +122,9 @@ ___X_CMD_THEME_TIME_H12_M='%@';
 ___X_CMD_THEME_HOST='%m'
 ___X_CMD_THEME_FULL_HOST='%M'
 
+# Exit
+___X_CMD_THEME_EXIT_STATUS='%?'
+
 else
 
 ___X_CMD_THEME_USER='\u'
@@ -127,6 +143,9 @@ ___X_CMD_THEME_TIME_H12_M='\@';
 # Host
 ___X_CMD_THEME_HOST='\h';
 ___X_CMD_THEME_FULL_HOST='\H';
+
+# Exit
+___X_CMD_THEME_EXIT_STATUS='$?'
 
 fi
 # EndSection

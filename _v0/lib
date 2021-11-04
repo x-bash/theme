@@ -120,13 +120,16 @@ ______x_cmd_theme_prompt_format_wrapper(){
     ___X_CMD_THEME_HOST="$9"
     ___X_CMD_THEME_FULL_HOST="${10}"
 
+    # Exit
+    ___X_CMD_THEME_EXIT_STATUS="${11}"
+
     ___x_cmd_theme_prompt_format
 }
 
 # load theme file
 ___x_cmd_theme_load_format() {
     if [ -z "${___X_CMD_THEME_NAME}" ]; then
-        ___X_CMD_THEME_NAME='ice'
+        ___X_CMD_THEME_NAME='ys'
     fi
 
     . "${1:?Provide theme file}"
@@ -138,7 +141,7 @@ ___x_cmd_theme_load_format() {
         PROMPT="$(___x_cmd_theme_prompt_format)"
     else
         # PS1 interprete \u before evaluation.
-        PS1="\$(______x_cmd_theme_prompt_format_wrapper \"\u\" \"\W\" \"\w\" \"\d\" \"\t\" \"\T\" \"\A\" \"\@\" \"\h\" \"\H\")"
+        PS1="\$(______x_cmd_theme_prompt_format_wrapper \"\u\" \"\W\" \"\w\" \"\d\" \"\t\" \"\T\" \"\A\" \"\@\" \"\h\" \"\H\" \"\$?\")"
     fi
 }
 # EndSection
