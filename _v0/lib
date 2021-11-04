@@ -22,9 +22,11 @@ ___x_cmd_theme_git_get_tag() {
 ___x_cmd_theme_git_get_short_sha() {
     git rev-parse --short HEAD 2> /dev/null
 }
+
 ___x_cmd_theme_hg_get_friendly_ref() {
     hg branch 2>/dev/null
 }
+
 ___x_cmd_theme_svn_get_friendly_ref() {
     #TODO: using awk
     svn info 2> /dev/null | grep '^URL:' | egrep -o '(tags|branches)/[^/]+|trunk'
@@ -94,6 +96,7 @@ ___x_cmd_theme_is_git_dirty() {
         printf 'true'
     fi
 }
+# TODO:
 ___x_cmd_theme_is_hg_dirty() {
     local _status
     _status="$(hg status 2>/dev/null)"
@@ -123,15 +126,11 @@ ______x_cmd_theme_prompt_format_wrapper(){
     ___X_CMD_THEME_HOST="$9"
     ___X_CMD_THEME_FULL_HOST="${10}"
 
-    # Exit
-    # ___X_CMD_THEME_EXIT_STATUS="${11}"
-
     ___x_cmd_theme_prompt_format
 }
 
 # load theme file
 ___x_cmd_theme_load_format() {
-    ___X_CMD_THEME_EXIT_STATUS="$?"
     if [ -z "${___X_CMD_THEME_NAME}" ]; then
         ___X_CMD_THEME_NAME='ys'
     fi
