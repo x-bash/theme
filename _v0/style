@@ -50,8 +50,8 @@ ___x_cmd_theme_style(){
             ibg-*)                                                  printf "%s" "%{$bg_no_bold[${1#ibg-}]%}"                   ;;
             rgbbg-*)                                                printf "%s" "%{$BG[${1#rgbbg-}]%}"                         ;;
             reset)                                                  printf "%s" "%{$reset_color%}"                             ;;
-            --)                                                     shift; printf "%s" "$*%{$reset_color%}"; return ;;
-            *)                                                      printf "%s" "$*%{$reset_color%}"; return
+            --)                                                     shift; printf "%s" "$*%{$reset_color%}%b%u"; return ;;
+            *)                                                      printf "%s" "$*%{$reset_color%}%b%u"; return
         esac
         shift
     done
