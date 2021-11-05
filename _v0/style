@@ -17,7 +17,7 @@
 # Section: ___x_cmd_theme_style
 # zsh https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Visual-effects
 # TODO: here
-if [[ ! "$*" = *--no-color* ]] && [ -z "${NO_COLOR}" ]; then
+if [ -z "${NO_COLOR}" ]; then
 
 if [ -n "$ZSH_VERSION" ]; then
 autoload -U colors && colors

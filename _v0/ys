@@ -1,7 +1,7 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039
 
-function ______x_cmd_theme_prompt_set_username() {
+______x_cmd_theme_prompt_set_username() {
     local _username
     if [ -n "$SSH_CONNECTION" ]; then
         _username="${___X_CMD_THEME_USER}@${___X_CMD_THEME_HOST}"
