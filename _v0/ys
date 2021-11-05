@@ -1,6 +1,18 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039
 
+function ______x_cmd_theme_prompt_set_username() {
+    local _username
+    if [ -n "$SSH_CONNECTION" ]; then
+        _username="${___X_CMD_THEME_USER}@${___X_CMD_THEME_HOST}"
+    else
+        _username="${___X_CMD_THEME_USER}"
+    fi
+    if [ -n _username ]; then
+        printf "%s" "$(___x_cmd_theme_style cyan "${_username}")"
+    fi
+}
+
 ______x_cmd_theme_prompt_get_info(){
     ___x_cmd_theme_scm && case "${___X_CMD_THEME_SCM_TYPE}" in
         git)
@@ -31,8 +43,6 @@ ______x_cmd_theme_prompt_set_symbol(){
 
 # Prompt format:
 ___x_cmd_theme_prompt_format(){
-    local username
-    username="$(___x_cmd_theme_style cyan "${___X_CMD_THEME_USER}")"
     local cwd
     cwd="$(___x_cmd_theme_style bold yellow "${___X_CMD_THEME_FULL_PATH}")"
     local time
@@ -40,7 +50,7 @@ ___x_cmd_theme_prompt_format(){
 
 
     printf "%s" "
-$(___x_cmd_theme_style bold blue '#') ${username} ${cwd} $(______x_cmd_theme_prompt_get_info)${time}
+$(___x_cmd_theme_style bold blue '#') $(______x_cmd_theme_prompt_set_username) ${cwd} $(______x_cmd_theme_prompt_get_info)${time}
 $(______x_cmd_theme_prompt_set_symbol ) "
 
 }
