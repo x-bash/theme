@@ -134,6 +134,10 @@ ______x_cmd_theme_prompt_format_wrapper(){
     ___X_CMD_THEME_HOST="$9"
     ___X_CMD_THEME_FULL_HOST="${10}"
 
+    # Color
+    ___X_CMD_COLOR_PRE="${11}"
+    ___X_CMD_COLOR_SUF="${12}"
+
     ___x_cmd_theme_prompt_format
 }
 
@@ -152,7 +156,7 @@ ___x_cmd_theme_load_format() {
         PROMPT='$(___X_CMD_THEME_EXIT_STATUS="$?" ___x_cmd_theme_prompt_format)'
     else
         # PS1 interprete \u before evaluation.
-        PS1="\$(___X_CMD_THEME_EXIT_STATUS=\"\$?\" ______x_cmd_theme_prompt_format_wrapper \"\u\" \"\W\" \"\w\" \"\d\" \"\t\" \"\T\" \"\A\" \"\@\" \"\h\" \"\H\")"
+        PS1="\$(___X_CMD_THEME_EXIT_STATUS=\"\$?\" ______x_cmd_theme_prompt_format_wrapper \"\u\" \"\W\" \"\w\" \"\d\" \"\t\" \"\T\" \"\A\" \"\@\" \"\h\" \"\H\" \"\[\" \"\]\")"
     fi
 }
 # EndSection
