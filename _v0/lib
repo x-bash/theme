@@ -93,7 +93,7 @@ ___x_cmd_theme_get_git_repo_name() {
   local repo_path
   repo_path="$(git rev-parse --show-toplevel 2>/dev/null)"
   if [ -n "$repo_path" ]; then
-    printf ${repo_path##*/}
+    printf "${repo_path##*/}"
   fi
 }
 
@@ -114,6 +114,37 @@ ___x_cmd_theme_is_hg_dirty() {
 }
 # EndSection
 
+# Section: theme lib
+
+______x_cmd_theme_prompt_remove_escapes() {
+    printf "%s" "$(printf "%s" "$1" | awk '{ gsub(/(\001\033|(%{)*%{\033|\033)\[([0-9]+;)*[0-9]+m(\002|(%})*(%b%u)?)?/, ""); print $0 }')"
+}
+
+______x_cmd_theme_set_top_prompt() {
+    local left_prompt="$1"
+    local right_prompt="$2"
+    local right_prompt_result
+    local right_prompt_leng
+    [ -z "$left_prompt" ] && return
+    [ -z "$right_prompt" ] && printf "$left_prompt"
+    local move_cursor_rightmost='\033[500C'
+    right_prompt_result="$(______x_cmd_theme_prompt_remove_escapes "$right_prompt")"
+    if [ -n "$ZSH_VERSION" ]; then
+        # zsh PROMPT interprete %n... after evaluation.
+        right_prompt_leng=${#${(%):-$right_prompt_result}}
+        left_prompt="${left_prompt}%{[500C%}"
+        left_prompt="${left_prompt}%{[${right_prompt_leng}D%}"
+        printf "%s" "${left_prompt}${right_prompt}"
+        return
+    fi
+    # PS1 interprete \u before evaluation.
+    right_prompt_leng=${#right_prompt_result}
+    left_prompt="${left_prompt}${move_cursor_rightmost}"
+    left_prompt="${left_prompt}\033[${right_prompt_leng}D"
+    printf "${left_prompt}${right_prompt}"
+}
+
+# EndSection
 
 # Section: loader main function
 # shellcheck disable=SC2034
