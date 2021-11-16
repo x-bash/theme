@@ -114,12 +114,16 @@ ___x_cmd_theme_is_hg_dirty() {
 }
 # EndSection
 
-# Section: theme lib
-
+# Section: theme lib for create top prompt
 ______x_cmd_theme_prompt_remove_escapes() {
     printf "%s" "$(printf "%s" "$1" | awk '{ gsub(/(\001\033|(%{)*%{\033|\033)\[([0-9]+;)*[0-9]+m(\002|(%})*(%b%u)?)?/, ""); print $0 }')"
 }
 
+###
+ # @description: can set left and right prompt in ___x_cmd_theme_prompt_format
+ # @param1 left_prompt
+ # @param2 right_prompt
+###
 ___x_cmd_theme_set_top_prompt() {
     local left_prompt="$1"
     local right_prompt="$2"
