@@ -12,9 +12,9 @@ ______x_cmd_theme_prompt_set_username() {
         _username_pre=
     fi
     if [ -n "$SSH_CONNECTION" ]; then
-        _username+="${___X_CMD_THEME_USER}@${___X_CMD_THEME_HOST}"
+        _username="${_username}${___X_CMD_THEME_USER}@${___X_CMD_THEME_HOST}"
     else
-        _username+="${___X_CMD_THEME_USER}"
+        _username="${_username}${___X_CMD_THEME_USER}"
     fi
     printf "%s" "$(___x_cmd_theme_style bold blue "${_username_pre}")$(___x_cmd_theme_style cyan "${_username}")"
 }
