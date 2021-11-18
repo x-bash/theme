@@ -1,4 +1,5 @@
 #! /usr/bin/env bash
+# Section : multiple
 ___x_cmd_eval_concurrent_single(){
     local s
     s="$(eval "$1")"
@@ -21,6 +22,8 @@ ___x_cmd_eval_concurrent(){
                 eval "$s"
     esac
 }
+# EndSection
+
 # Section : git info func
 ___x_cmd_theme_is_git_dirty() {
     local _status
@@ -59,12 +62,13 @@ s="${s#*---x-theme-}"
 }
 # EndSection
 
+# Section : main test
 aaa() {
     echo '-------'
     local _branch
     local _repo_name
     local _is_dirty
-    run _branch _repo_name _is_dirty
+    ___x_cmd_theme_get_git_scm_info _branch _repo_name _is_dirty
 
     echo "$_branch"
     echo "$_repo_name"
@@ -86,5 +90,6 @@ aaa() {
 # }
 
 time aaa
+# EndSection
 
 
