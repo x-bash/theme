@@ -105,6 +105,8 @@ ___x_cmd_theme_control_rollback(){
 
 
 # Best efforts to retrieve background color.
+# Works: terminal app in macos, ...
+# Now works: vscode, ...
 # Reference:
 # 1. https://unix.stackexchange.com/questions/172548/how-to-determine-the-current-color-of-the-console-output
 # 2. https://newbedev.com/how-to-determine-a-terminal-s-background-color
