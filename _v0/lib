@@ -134,11 +134,11 @@ ______x_cmd_theme_prompt_remove_escapes() {
 }
 
 ###
- # @description: can set left and right prompt in ___x_cmd_theme_prompt_format
+ # @description: can set left and right prompt in ___x_cmd_theme_use_two_column_layout
  # @param1 left_prompt
  # @param2 right_prompt
 ###
-___x_cmd_theme_set_top_prompt() {
+___x_cmd_theme_use_two_column_layout() {
     local left_prompt="$1"
     local right_prompt="$2"
     local right_prompt_result
