@@ -84,12 +84,6 @@ ___x_cmd_theme_git_get_prompt_info_exe() {
 
 ___x_cmd_theme_scm() {
     ___X_CMD_THEME_SCM_TYPE="$(___x_cmd_theme_git_get_prompt_info_exe 2>/dev/null)"
-    case "$___X_CMD_THEME_SCM_TYPE" in
-        git)        ___X_CMD_THEME_SCM_INFO="$(___x_cmd_theme_git_get_friendly_ref)";;
-        hg)         ___X_CMD_THEME_SCM_INFO="$(___x_cmd_theme_hg_get_friendly_ref)" ;;
-        svn)        ___X_CMD_THEME_SCM_INFO="$(___x_cmd_theme_svn_get_friendly_ref)" ;;
-        *)          ___X_CMD_THEME_SCM_TYPE= ;;
-    esac
 }
 
 ___x_cmd_theme_get_git_repo_name() {
