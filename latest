@@ -68,7 +68,7 @@ ___x_cmd_theme_control_use(){
 }
 
 ___x_cmd_theme_control_unset(){
-    local ___X_CMD_ROOT_RC="$HOME/.x-cmd/.boot/rc"
+    local ___X_CMD_ROOT_RC="$___X_CMD_ROOT/.boot/rc"
     if [ ! -f "$___X_CMD_ROOT_RC" ]; then
         printf "%s\n" "The configuration file does not exist,unset failed"
         return 0
@@ -116,7 +116,7 @@ ___x_cmd_theme_control_rollback(){
 
 ___x_cmd_theme_control_zinit(){
     local _have_loaded_theme
-    _have_loaded_theme=$(x boot rc ls | grep 'x-theme')
+    _have_loaded_theme=$([ -f "$___X_CMD_ROOT/.boot/rc" ] && x boot rc ls | grep 'x-theme')
     # load theme
     [ -z "$_have_loaded_theme" ] && ___x_cmd_theme_control_use ""
     # load zsh plugins
