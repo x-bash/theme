@@ -1,5 +1,5 @@
 # shellcheck shell=sh
-# shellcheck disable=SC2039
+# shellcheck disable=SC2039,SC3044,SC2154,SC1087,SC2128,SC2144
 
 # variables setup
 ###
@@ -24,13 +24,13 @@ autoload -U colors && colors
 
 ______x_cmd_theme_setup_zsh_color(){
     typeset -AHg FG BG
+    # shellcheck disable=SC3009
     for color in {000..255}; do
         FG[$color]="%{[38;5;${color}m%}"
         BG[$color]="%{[48;5;${color}m%}"
     done
 }
 
-# sheckcheck disable=SC2144
 if [ -z $FG[100] ];then
     ______x_cmd_theme_setup_zsh_color
 fi
