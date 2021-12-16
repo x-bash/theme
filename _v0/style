@@ -85,7 +85,7 @@ ___x_cmd_theme_style(){
             bg-*)                                                   printf "${___X_CMD_COLOR_PRE}\033[4$(______x_cmd_theme_colorcode "${1#bg-}")m${___X_CMD_COLOR_SUF}"    ;;
             bbg-*)                                                  printf "${___X_CMD_COLOR_PRE}\033[1;4$(______x_cmd_theme_colorcode "${1#bbg-}")m${___X_CMD_COLOR_SUF}" ;;
             ibg-*)                                                  printf "${___X_CMD_COLOR_PRE}\033[10$(______x_cmd_theme_colorcode "${1#ibg-}")m${___X_CMD_COLOR_SUF}"  ;;
-            rgbbg-*)                                                printf "${___X_CMD_COLOR_PRE}\033[48;5;"${1#rgbfg-}"m${___X_CMD_COLOR_SUF}"                            ;;
+            rgbbg-*)                                                printf "${___X_CMD_COLOR_PRE}\033[48;5;"${1#rgbbg-}"m${___X_CMD_COLOR_SUF}"                            ;;
             reset)                                                  printf "${___X_CMD_COLOR_PRE}\033[0m${___X_CMD_COLOR_SUF}"                                             ;;
             --)                                                     shift; printf "%s${___X_CMD_COLOR_PRE}\033[0m${___X_CMD_COLOR_SUF}" "$*"; return ;;
             *)                                                      printf "%s${___X_CMD_COLOR_PRE}\033[0m${___X_CMD_COLOR_SUF}" "$*"; return
