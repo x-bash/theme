@@ -35,7 +35,7 @@ ___x_cmd_theme_which(){
     local ___X_CMD_CURL_UPDATE="${___X_CMD_CURL_UPDATE}"
 
     local CACHE="$___X_CMD_ROOT/.tmp/theme/$name"
-    if [ "$name" = 'index.yml' ] && [ -z "$(find "$CACHE" -mmin -1 2>/dev/null)" ]; then
+    if [ "$name" = 'index.yml' ] && [ -z "$(find "$CACHE" -mmin -60 2>/dev/null)" ]; then
         rm -rf "$CACHE"
         ___X_CMD_CURL_UPDATE=
     fi
