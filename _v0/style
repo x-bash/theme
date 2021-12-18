@@ -22,6 +22,7 @@ ______x_cmd_theme_setup_zsh_256color(){
     typeset -AHg FG BG
     # shellcheck disable=SC3009
     for color in {000..255}; do
+        # replace $'%{\033[38;5;31%}'
         FG[$color]="%{[38;5;${color}m%}"
         BG[$color]="%{[48;5;${color}m%}"
     done
@@ -32,11 +33,11 @@ ______x_cmd_theme_setup_zsh_basecolor(){
     typeset -AHg fg_dim bg_dim fg_light bg_light
     for k in ${(k)color[(I)fg-*]}; do
         fg_dim[${k#fg-}]="%{[2;${color[$k]}m%}"
-        fg_light[${k#fg-}]="%{[9${color[$k]}m%}"
+        fg_light[${k#fg-}]="%{[9${color[$k]#3}m%}"
     done
     for k in ${(k)color[(I)bg-*]}; do
         bg_dim[${k#bg-}]="%{[2;${color[$k]}m%}"
-        bg_light[${k#bg-}]="%{[10${color[$k]}m%}"
+        bg_light[${k#bg-}]="%{[10${color[$k]#4}m%}"
     done
     unset k
 }
@@ -93,12 +94,12 @@ ___x_cmd_theme_style(){
             black|red|green|yellow|blue|magenta|cyan|white)         printf "${___X_CMD_COLOR_PRE}\033[3$(______x_cmd_theme_colorcode "$1")m${___X_CMD_COLOR_SUF}"          ;;
             fg-*)                                                   printf "${___X_CMD_COLOR_PRE}\033[3$(______x_cmd_theme_colorcode "${1#fg-}")m${___X_CMD_COLOR_SUF}"    ;;
             bfg-*)                                                  printf "${___X_CMD_COLOR_PRE}\033[1;3$(______x_cmd_theme_colorcode "${1#bfg-}")m${___X_CMD_COLOR_SUF}" ;;
-            hfg-*)                                                  printf "${___X_CMD_COLOR_PRE}\033[9$(______x_cmd_theme_colorcode "${1#ifg-}")m${___X_CMD_COLOR_SUF}"   ;;
+            hfg-*)                                                  printf "${___X_CMD_COLOR_PRE}\033[9$(______x_cmd_theme_colorcode "${1#hfg-}")m${___X_CMD_COLOR_SUF}"   ;;
             dfg-*)                                                  printf "${___X_CMD_COLOR_PRE}\033[2;3$(______x_cmd_theme_colorcode "${1#dfg-}")m${___X_CMD_COLOR_SUF}" ;;
             rgbfg-*)                                                printf "${___X_CMD_COLOR_PRE}\033[38;5;${1#rgbfg-}m${___X_CMD_COLOR_SUF}"                              ;;
             bg-*)                                                   printf "${___X_CMD_COLOR_PRE}\033[4$(______x_cmd_theme_colorcode "${1#bg-}")m${___X_CMD_COLOR_SUF}"    ;;
             bbg-*)                                                  printf "${___X_CMD_COLOR_PRE}\033[1;4$(______x_cmd_theme_colorcode "${1#bbg-}")m${___X_CMD_COLOR_SUF}" ;;
-            hbg-*)                                                  printf "${___X_CMD_COLOR_PRE}\033[10$(______x_cmd_theme_colorcode "${1#ibg-}")m${___X_CMD_COLOR_SUF}"  ;;
+            hbg-*)                                                  printf "${___X_CMD_COLOR_PRE}\033[10$(______x_cmd_theme_colorcode "${1#hbg-}")m${___X_CMD_COLOR_SUF}"  ;;
             dbg-*)                                                  printf "${___X_CMD_COLOR_PRE}\033[2;4$(______x_cmd_theme_colorcode "${1#dbg-}")m${___X_CMD_COLOR_SUF}" ;;
             rgbbg-*)                                                printf "${___X_CMD_COLOR_PRE}\033[48;5;${1#rgbbg-}m${___X_CMD_COLOR_SUF}"                              ;;
             reset)                                                  printf "${___X_CMD_COLOR_PRE}\033[0m${___X_CMD_COLOR_SUF}"                                             ;;
