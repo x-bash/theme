@@ -41,7 +41,7 @@ ______x_cmd_theme_setup_zsh_basecolor(){
     unset k
 }
 
-______x_cmd_theme_setup_zsh_dimcolor
+______x_cmd_theme_setup_zsh_basecolor
 if [ -z $FG[100] ];then
     ______x_cmd_theme_setup_zsh_256color
 fi
