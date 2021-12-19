@@ -24,9 +24,10 @@ ______x_cmd_theme_setup_zsh_256color(){
     # shellcheck disable=SC3009
     for _color in {000..255}; do
         # replace $'%{\033[38;5;31%}'
-        FG[$_color]="%{[38;5;${color}m%}"
-        BG[$_color]="%{[48;5;${color}m%}"
+        FG[$_color]="%{[38;5;${_color}m%}"
+        BG[$_color]="%{[48;5;${_color}m%}"
     done
+    unset _color
 }
 
 ______x_cmd_theme_setup_zsh_basecolor(){
@@ -39,6 +40,7 @@ ______x_cmd_theme_setup_zsh_basecolor(){
         bg_dim[${k#bg-}]="%{[2;${color[$k]}m%}"
         bg_light[${k#bg-}]="%{[10${color[$k]#4}m%}"
     done
+    unset k
 }
 
 ______x_cmd_theme_setup_zsh_basecolor
