@@ -41,10 +41,10 @@ ______x_cmd_theme_setup_zsh_basecolor(){
     done
 }
 
-# ______x_cmd_theme_setup_zsh_basecolor
-# if [ -z $FG[100] ];then
-#     ______x_cmd_theme_setup_zsh_256color
-# fi
+______x_cmd_theme_setup_zsh_basecolor
+if [ -z $FG[100] ];then
+    ______x_cmd_theme_setup_zsh_256color
+fi
 
 ___x_cmd_theme_style(){
     while [ $# -gt 0 ]; do
