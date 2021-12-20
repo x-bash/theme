@@ -1,4 +1,4 @@
-# shellcheck shell=sh disable=SC3043
+# shellcheck shell=sh disable=SC3043 # xrc
 
 xrc param/v0
 
@@ -65,7 +65,7 @@ xrc theme/_v0/style
 ___x_cmd_theme_control_use(){
     local name="${1:-ys}"
     ___x_cmd_theme_control_try "$name"
-    x boot rc add x-theme x theme try "$name"
+    x boot rc add "x-theme" "xrc theme && ___x_cmd_theme_control try $name"
 }
 
 ___x_cmd_theme_control_unset(){
