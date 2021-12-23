@@ -109,12 +109,16 @@ END{
 
     local code=$?
     if [ "$code" != 0 ]; then
+        printf "\033[31m%s\033[33m%s\n%s \033[1;36m%s\033[0m\n" \
+            "[x-cmd]: Not found theme in cache." "Check the theme name is exist." \
+            "Or you can try run command to update cache." "\`x theme ls\`"
         return $code
     fi
 
     local fp
     if fp="$(___x_cmd_theme_which "$name")"; then
         ___x_cmd_theme_load_format "$fp"
+        return 0
     fi
     return 1
 }
