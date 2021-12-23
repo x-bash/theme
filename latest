@@ -5,10 +5,10 @@ xrc param/v0
 # Section: main
 
 ___x_cmd_theme_control(){
-    local zinit zinit_json
-    local font font_json
-    [ -n "$ZSH_VERSION" ] && zinit="zinit    \"init the zsh environment\"" && zinit_json=" \"zinit\": \"--- init the zsh environment\","
-    [ -z "$SSH_CONNECTION" ] && [ ! -f "/.dockerenv" ] && font="font    \"install powerline font\"" && font_json=" \"font\": \"--- install powerline font\","
+    local zinit
+    local font
+    [ -n "$ZSH_VERSION" ] && zinit="zinit    \"init the zsh environment\""
+    [ -z "$SSH_CONNECTION" ] && [ ! -f "/.dockerenv" ] && font="font    \"install powerline font\""
     param:dsl <<A
 subcommands:
     ls          "list all theme"
@@ -19,24 +19,6 @@ subcommands:
     unset       "unset the theme"
 A
     param:run
-
-    advise theme - <<A
-{
-    "ls": "--- list all theme",
-    "use": {
-        "#1": "awk '{ print \$2; }' <\$___X_CMD_ROOT/.tmp/theme/index.yml",
-        "#desc": "use theme when starting the shell"
-    },
-    "try": {
-        "#1": "awk '{ print \$2; }' <\$___X_CMD_ROOT/.tmp/theme/index.yml",
-        "#desc": "try theme"
-    },
-    ${zinit_json}
-    ${font_json}
-    "rollback": "--- use last theme",
-    "unset": "--- unset last theme"
-}
-A
 
     if [ -z "$PARAM_SUBCMD" ]; then
         ___x_cmd_theme_control _param_help_doc
@@ -220,6 +202,22 @@ ___x_cmd_theme_control_get_current_background_color(){
 # EndSection
 
 if [ -n "$___X_CMD_ENABLE_AUTO_RUN" ]; then
-    xrc advise
     ___x_cmd_theme_control "$@"
+fi
+
+if ___x_cmd_is_suitable_advise_env; then
+    advise theme - <<A
+{
+    "ls": "--- list all theme",
+    "use": {
+        "#1": "awk '{ print \$2; }' <\$___X_CMD_ROOT/.tmp/theme/index.yml",
+        "#desc": "use theme when starting the shell"
+    },
+    "try": {
+        "#1": "awk '{ print \$2; }' <\$___X_CMD_ROOT/.tmp/theme/index.yml",
+        "#desc": "try theme"
+    },
+    "unset": "--- unset last theme"
+}
+A
 fi
