@@ -39,12 +39,7 @@ ___x_cmd_theme_which(){
         ___X_CMD_CURL_UPDATE=
     fi
 
-    local url="https://gitee.com/x-cmd/theme/raw/main/$name"
-    if [ "$___X_CMD_IN_CHINA_NET" != 1 ]; then
-        url="https://raw.githubusercontent.com/x-cmd/theme/main/$name"
-    fi
-
-    ___x_cmd_curl "$url" && printf "%s" "$CACHE"
+    ___x_cmd_curl_gitx x-cmd theme main "${name}" "$CACHE" && printf "%s" "$CACHE"
 }
 
 # EndSection
