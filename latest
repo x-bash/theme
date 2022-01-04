@@ -30,16 +30,15 @@ A
 
 ___x_cmd_theme_which(){
     local name="${1:?Provide name}"
+    local cache="$___X_CMD_ROOT/.tmp/theme/$name"
 
     local ___X_CMD_CURL_UPDATE="${___X_CMD_CURL_UPDATE}"
-
-    local CACHE="$___X_CMD_ROOT/.tmp/theme/$name"
-    if [ "$name" = 'index.yml' ] && [ -z "$(find "$CACHE" -mtime -1 2>/dev/null)" ]; then
-        rm -rf "$CACHE"
+    if [ "$name" = 'index.yml' ] && [ -z "$(find "$cache" -mtime -1 2>/dev/null)" ]; then
+        rm -rf "$cache"
         ___X_CMD_CURL_UPDATE=
     fi
 
-    ___x_cmd_curl_gitx x-cmd theme main "${name}" "$CACHE" && printf "%s" "$CACHE"
+    ___x_cmd_curl_gitx x-cmd theme main "${name}" "$cache" && printf "%s" "$cache"
 }
 
 # EndSection
