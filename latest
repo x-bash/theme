@@ -32,11 +32,11 @@ ___x_cmd_theme_which(){
     local name="${1:?Provide name}"
     local cache="$___X_CMD_ROOT/.tmp/theme/$name"
 
-    local ___X_CMD_CURL_UPDATE=
+    local expiration=""
     if [ "$name" = "index.yml" ]; then
-        ___X_CMD_CURL_UPDATE=1
+        expiration=1
     fi
-    ___x_cmd_curl_gitx x-cmd theme main "${name}" "$cache" && printf "%s" "$cache"
+    ___x_cmd_curl_gitx x-cmd theme main "${name}" "$cache" "$expiration" && printf "%s" "$cache"
 }
 
 # EndSection
