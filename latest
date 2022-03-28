@@ -177,9 +177,9 @@ ___x_cmd_theme_control_font() {
     local cache="$_font_dir/$_font_name"
     local expiration=""
     ___x_cmd_curl_gitx x-cmd theme main "font/$_font_name" "$cache" "$expiration"
-    if [ -n "$(command -v fc-cache)" ] ; then
+    if command -v fc-cache ; then
         printf "%s\n" "[x-cmd]: Resetting font cache, this may take a moment..."
-        fc-cache -f "$_font_dir"
+        command fc-cache -f "$_font_dir"
     fi
 }
 
