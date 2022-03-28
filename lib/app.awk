@@ -170,6 +170,35 @@ function ctrl(char_type, char_value,        _selected, _selected_keypath ){
 
 # EndSection
 
+# Section: cmd
+BEGIN{
+    THEME_ARR_L = 0
+    PREVIEW_ARR_L = 0
+}
+
+function get_theme_arr( _cmd, i){
+    _cmd = "tar t " THEME_TAR_PATH
+    for (i=1; _cmd | getline _line; i++) {
+        if ( _line ~ /^style\// ) {
+            THEME_ARR[ ++THEME_ARR_L ] = substr(_line, 6)
+        }
+    }
+}
+
+function get_theme_preview( theme, _cmd, i, c){
+    c = PREVIEW[theme]
+    if ( c == "" ) {
+        _cmd = "tar x " THEME_TAR_PATH " " "style/" theme
+        for (i=1; _cmd | getline _line; i++) {
+            c = c "\n" _line
+        }
+
+        PREVIEW[theme] = c
+    }
+    return c
+}
+# EndSection
+
 # Section: cmd source
 NR==1{
     try_update_width_height( $0 )
@@ -194,57 +223,12 @@ NR>1{
 }
 # EndSection
 
-# Section: Functions differ in apps
-
-function is_expandable( curkp ){
-    return ( data[ curkp A "TYPE" ] == "directory" ) ? true : false
-}
-
-function prepare_selected_item_data(        _selected, _selected_keypath ){
-    _selected = data[ cur_keypath L ctrl_win_val(treectrl, cur_keypath) ]
-    _selected_keypath = cur_keypath S _selected
-    if ( is_expandable( _selected_keypath ) == false ) return
-    getdata( _selected_keypath )
-}
-
-function getdata(curkp,         _file_keypath, cmd_format, _cmd, _line, _code, _arrl, _arr, i, _name, _len, _max_len ){
-    # cache
-    if (data[ curkp L ] != "")  return
-    _file_keypath = curkp
-    gsub(S, "/", _file_keypath)
-    cmd_format = "ls -A | xargs stat -c \"%%n\t%%F\t%%s\t%%x\t%%y\t%%z\t%%A\t%%u/%%U\t%%g/%%G\" 2>/dev/null; "
-    if (_file_keypath != ".")  cmd_format = "cd %s; " cmd_format " cd - >/dev/null"
-
-    _cmd = sprintf(cmd_format, _file_keypath)
-    for (i=1; _cmd | getline _line; i++) {
-        _arrl = split( _line, _arr, "\t" )
-        _name = _arr[1]
-        data[ curkp L i ] = _name
-        data[ curkp S _name A "TYPE" ]      = _arr[2]
-        data[ curkp S _name A "SIZE" ]      = _arr[3]
-        data[ curkp S _name A "ACCESS" ]    = _arr[4]
-        data[ curkp S _name A "MODIFY" ]    = _arr[5]
-        data[ curkp S _name A "CHANGE" ]    = _arr[6]
-        data[ curkp S _name A "PERM" ]      = _arr[7]
-        data[ curkp S _name A "UID" ]       = _arr[8]
-        data[ curkp S _name A "GID" ]       = _arr[9]
-        _len = wcswidth(_name)
-        if ( _max_len < _len) _max_len = _len
-    }
-    data[ curkp A "MAX_LEN" ]    = _max_len
-    i-=1
-    data[ curkp L ] = i
-    if ( MAX_DATA_ROW_NUM < i ) MAX_DATA_ROW_NUM = i
-    ctrl_win_init( treectrl, curkp, 1, data[ curkp L ], get_view_body_row_size() )
-    return
-}
 
 END {
     if ( exit_is_with_cmd() == true ) {
         _selected = data[ cur_keypath L ctrl_win_val( treectrl, cur_keypath ) ]
         _selected_keypath = cur_keypath S _selected
-        send_env( "___X_CMD_UI_CATSEL_FINAL_COMMAND",    exit_get_cmd() )
-        send_env( "___X_CMD_UI_CATSEL_CURRENT_ITEM",  _selected_keypath )
+        send_env( "___X_CMD_THEME_FINAL_COMMAND",    exit_get_cmd() )
+        send_env( "___X_CMD_THEME_CURRENT_ITEM",  _selected_keypath )
     }
 }
-# EndSection
