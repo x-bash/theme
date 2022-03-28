@@ -71,18 +71,19 @@ BEGIN{
 }
 
 function get_theme_arr( _cmd, i){
-    _cmd = "tar t " THEME_TAR_PATH
+    # tar -t style/ <theme.tgz
+    _cmd = "tar t style/ <" THEME_TAR_PATH
     for (i=1; _cmd | getline _line; i++) {
-        if ( _line ~ /^style\// ) {
-            THEME_ARR[ ++THEME_ARR_L ] = substr(_line, 6)
-        }
+
+        THEME_ARR[ ++THEME_ARR_L ] = substr(_line, 6)
     }
 }
 
 function get_theme_preview( theme, _cmd, i, c){
     c = PREVIEW[theme]
     if ( c == "" ) {
-        _cmd = "tar x " THEME_TAR_PATH " " "style/" theme
+        # tar -O -x style-preview/ys  <theme.tgz
+        _cmd = "tar -O -x " " " "style-preview/" theme " < " THEME_TAR_PATH
         for (i=1; _cmd | getline _line; i++) {
             c = c "\n" _line
         }
