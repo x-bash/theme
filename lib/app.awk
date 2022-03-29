@@ -55,7 +55,7 @@ function view_select(       _cur_tag_idx, _cur_tag, _data, _selected_theme_idx, 
             _item_text = str_pad_right( _data_item_idx, max_theme_len, THEME_TAG_ITEM[ _data_item_idx L ] )
             if (ctrl_sw_get( IS_FOCUS_TAG ) == false) _SELECTED_ITEM_STYLE = TH_THEME_PREVIEW_FOCUSE
             if (_selected_theme_idx == _iter_item_idx) _item_text = th( _SELECTED_ITEM_STYLE TH_THEME_PREVIEW_SELECT, _item_text)
-            _data = _data "    " _item_text
+            _data = _data "    "  _item_text
         }
         _data = _data "\n"
     }
@@ -105,6 +105,10 @@ function model_generate(    _filter,    i, l){
     _cur_tag_idx = ctrl_rstate_get(SELECTED_THEME_TAG_IDX)
     _cur_tag     = THEME_TAG[ _cur_tag_idx ]
     model_len    = THEME_TAG_ITEM[ _cur_tag L ]
+    # for (i=1; i<=THEME_ARR_L; i++) {
+    #     if (THEME_ARR[i] = )
+    #     model[i] =
+    # }
     ctrl_rstate_init( SELECTED_THEME_IDX, 1, model_len )
 }
 # EndSection
@@ -120,7 +124,7 @@ BEGIN{
 
 function get_theme_arr(         _cmd, i, _theme, _line, _len, _max_len){
     # tar -t style/ -f theme.tgz
-    _cmd = "tar -t style/ -f " THEME_TAR_PATH
+    _cmd = "tar -f " THEME_TAR_PATH " -t style/"
     for (i=1; _cmd | getline _line; i++) {
         _theme = substr(_line, 7)
         if ( _theme == "" ) continue
@@ -133,7 +137,7 @@ function get_theme_arr(         _cmd, i, _theme, _line, _len, _max_len){
 }
 
 function get_theme_tag(         _cmd, i, _tag, _line, _theme){
-    _cmd = "tar -O -x ui.yml -f " THEME_TAR_PATH
+    _cmd = "tar -f " THEME_TAR_PATH " -O -x index.yml"
     while ( _cmd | getline _line) {
         if ( _line ~ /^-/ ) {
             THEME_TAG_ITEM[ _tag L ] = i
@@ -156,9 +160,10 @@ function get_theme_preview( theme,          _cmd, i, c, _ROW_LINE, _line){
     if (theme == "") return
     c = PREVIEW[theme]
     if ( c == "" ) {
-        # tar -O -x style-preview/ys -f theme.tgz
-        _cmd = "tar -O -x " " " "style-preview/" theme " -f " THEME_TAR_PATH
+        _cmd = "tar -f " THEME_TAR_PATH " -O -x style-preview/" theme
+        c = "theme: " theme
         for (i=1; _cmd | getline _line; i++) {
+            if (_line == "") continue
             c = c "\n" _line
             ++_ROW_LINE
         }
