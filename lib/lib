@@ -206,7 +206,10 @@ ___x_cmd_theme_load_format() {
         ___X_CMD_THEME_NAME='ys'
     fi
 
-    . "${1:?Provide theme file}"
+   case "${1:?Provide theme file}" in
+       *)   eval "$(tar xf "$1" -O "${2:?Provide theme name}")"          ;;
+   esac
+
     # TODO: config which envrinonments to pass
 
     if [ -n "$ZSH_VERSION" ]; then
