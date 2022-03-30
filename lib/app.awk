@@ -25,7 +25,7 @@ function view_tag(         _cur_tag_idx, i, _tag, _data, _SELECTED_ITEM_STYLE ){
         _tag = THEME_TAG[i]
         if (ctrl_sw_get( IS_FOCUS_TAG ) == true) _SELECTED_ITEM_STYLE = TH_THEME_PREVIEW_FOCUSE
         if ( CUR_TAG_IDX == i) _tag = th(_SELECTED_ITEM_STYLE UI_TEXT_REV, _tag)
-        _data = _data " " _tag
+        _data = _data "    " _tag
     }
     return _data
 }
@@ -175,7 +175,7 @@ NR==1{
     get_theme_tag()
     model_generate()
     ctrl_sw_init( IS_FOCUS_TAG, true )
-    get_theme_preview( THEME_ARR[1] )
+    get_theme_preview( THEME_TAG_ITEM[ CUR_TAG 1] )
     view()
 }
 
