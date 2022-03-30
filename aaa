@@ -1,0 +1,17 @@
+
+[36medwinjhlee[0m [1m[33m~/x-cmd/theme[0m on git:[36mmain[0m [33mx[0m [21:11:55]
+[1m[32m$[0m ls
+LICENSE		font		style
+dist		index.yml	style-preview
+
+[36medwinjhlee[0m [1m[33m~/x-cmd/theme[0m on git:[36mmain[0m [33mx[0m [21:11:55]
+[1m[32m$[0m cd ~/x-cmd
+
+[36medwinjhlee[0m [1m[33m~/x-cmd[0m [21:11:55]
+[1m[32m$[0m ls
+Main		env		lijunhao	theme
+abc		hub		monosrc		tldr
+advise		image		nightly		x-cmd
+dev		install		python		x-wechat
+
+[36medwinjhlee[0m [1m[33m~/x-cmd[0m [21:11:55]

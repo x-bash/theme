@@ -13,21 +13,31 @@ function view(      _component_help, _component_tag, _component_select, _compone
     _component_select       = view_select()
     _component_preview      = view_preview()
 
-    send_update( _component_help "\n" _component_tag "\n\n" _component_select "\n" _component_preview  )
+    send_update( _component_help "\n" _component_tag "\n" _component_select "\n" _component_preview  )
 }
 
 function view_help(){
     return sprintf("%s", th_help_text( ctrl_help_get() ) )
 }
 
-function view_tag(         _cur_tag_idx, i, _tag, _data, _SELECTED_ITEM_STYLE ){
+function view_tag(         _cur_tag_idx, i, _tag, _data, _head_line, _foot_line, _head_line_item, _foot_line_item, _SELECTED_ITEM_STYLE ){
     for (i=1; i<=THEME_TAG_L; i++){
         _tag = THEME_TAG[i]
-        if (ctrl_sw_get( IS_FOCUS_TAG ) == true) _SELECTED_ITEM_STYLE = TH_THEME_PREVIEW_FOCUSE
-        if ( CUR_TAG_IDX == i) _tag = th(_SELECTED_ITEM_STYLE UI_TEXT_REV, _tag)
-        _data = _data "    " _tag
+        _tag = str_pad_right( _tag, max_tag_len )
+        _head_line_item = ui_str_rep(" ", max_tag_len)
+        _foot_line_item = ui_str_rep("─", max_tag_len)
+        if (ctrl_sw_get( IS_FOCUS_TAG ) == true) _SELECTED_ITEM_STYLE = TH_THEME_PREVIEW_FOCUSE UI_TEXT_REV
+        if ( CUR_TAG_IDX == i) {
+            _head_line_item =  "┌" ui_str_rep("─", max_tag_len) "┐"
+            _foot_line_item =  "┘" ui_str_rep(" ", max_tag_len) "└"
+            _tag = "│" th(_SELECTED_ITEM_STYLE , _tag) "│"
+        }
+        _head_line = _head_line _head_line_item
+        _foot_line = _foot_line _foot_line_item
+        _data = _data  _tag
     }
-    return _data
+    _foot_line = _foot_line ui_str_rep("─", max_col_size - (THEME_TAG_L * max_tag_len) - 2)
+    return _head_line "\n" _data "\n" _foot_line
 }
 
 # Using grid select
@@ -40,9 +50,9 @@ function view_select(        _data, _selected_theme_idx, _SELECTED_ITEM_STYLE, p
     view_page_item_num  = view_body_col_num * 3
     view_page_num       = int( ( model_len - 1 ) / view_page_item_num ) + 1
     _selected_theme_idx  = ctrl_rstate_get( SELECTED_THEME_IDX )
-    page_index = int( (_selected_item_idx - 1) / view_page_item_num ) + 1
+    page_index = int( (_selected_theme_idx - 1) / view_page_item_num ) + 1
     page_begin = int( (page_index - 1) * view_page_item_num)
-    view_body_row_num = int( model_len - 1 ) / view_body_col_num + 1
+    view_body_row_num = int( ( model_len - 1 ) / view_body_col_num ) + 1
     if ( view_body_row_num > 3 ) view_body_row_num = 3
     for (i=0; i<view_body_row_num; i++) {
         for (j=1; j<=view_body_col_num; j++) {
@@ -52,11 +62,11 @@ function view_select(        _data, _selected_theme_idx, _SELECTED_ITEM_STYLE, p
             _item_text = str_pad_right( _data_item_text, max_theme_len, THEME_TAG_ITEM[ _data_item_text L ] )
             if (ctrl_sw_get( IS_FOCUS_TAG ) == false) _SELECTED_ITEM_STYLE = TH_THEME_PREVIEW_FOCUSE
             if (_selected_theme_idx == _iter_item_idx) _item_text = th( _SELECTED_ITEM_STYLE TH_THEME_PREVIEW_SELECT, _item_text)
-            _data = _data "    "  _item_text
+            _data = _data "    " _item_text
         }
         _data = _data "\n"
     }
-    _data = _data "\n" ui_str_rep("─", max_col_size)
+    _data = _data ui_str_rep("─", max_col_size)
     return _data
 }
 
@@ -103,6 +113,7 @@ function model_generate(){
     CUR_TAG     = THEME_TAG[ CUR_TAG_IDX ]
     model_len   = THEME_TAG_ITEM[ CUR_TAG L ]
     ctrl_rstate_init( SELECTED_THEME_IDX, 1, model_len )
+    view_body_col_num = int(max_col_size / (max_theme_len + 4))
 }
 # EndSection
 
@@ -110,13 +121,11 @@ function model_generate(){
 BEGIN{
     THEME_ARR_L = 0
     PREVIEW_ARR_L = 0
-    # THEME_TAR_PATH = "../xcmd/theme/dist/theme.tgz"
     THEME_TAR_PATH = "~/.x-cmd/.tmp/theme/theme.tgz"
 }
 
 
 function get_theme_arr(         _cmd, i, _theme, _line, _len, _max_len){
-    # tar -t style/ -f theme.tgz
     _cmd = "tar -f " THEME_TAR_PATH " -t style/"
     for (i=1; _cmd | getline _line; i++) {
         _theme = substr(_line, 7)
@@ -126,16 +135,18 @@ function get_theme_arr(         _cmd, i, _theme, _line, _len, _max_len){
         if ( _max_len < _len ) _max_len = _len
     }
     THEME_ARR[ L ] = _max_len
-    view_body_col_num = int(max_col_size / (_max_len + 4))
 }
 
 function get_theme_tag(         _cmd, i, _tag, _line, _theme){
     _cmd = "tar -f " THEME_TAR_PATH " -O -x index.yml"
+    # _cmd = "cat ../xcmd/theme/ui.yml"
     while ( _cmd | getline _line) {
         if ( _line ~ /^-/ ) {
             THEME_TAG_ITEM[ _tag L ] = i
             i=0
             _tag = substr(_line, 3)
+            _tag_len = length(_tag)
+            if ( max_tag_len < _tag_len ) max_tag_len = _tag_len
             THEME_TAG[ ++THEME_TAG_L ] = _tag
         } else {
             _theme = substr(_line, 5)
@@ -154,12 +165,12 @@ function get_theme_preview( theme,          _cmd, i, c, _ROW_LINE, _line){
     c = PREVIEW[theme]
     if ( c == "" ) {
         _cmd = "tar -f " THEME_TAR_PATH " -O -x style-preview/" theme
-        c = "theme: " theme
         for (i=1; _cmd | getline _line; i++) {
-            if (_line == "") continue
             c = c "\n" _line
             ++_ROW_LINE
         }
+        gsub(/^[ \t\b\v\n]+/, "", c)
+        gsub(/[ \t\b\v\n]+$/, "", c)
         PREVIEW[theme] = c
     }
     if (PREVIEW_ROW_LINE < _ROW_LINE) PREVIEW_ROW_LINE = _ROW_LINE
