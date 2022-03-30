@@ -21,20 +21,17 @@ function view_help(){
 }
 
 function view_tag(         _cur_tag_idx, i, _tag, _data, _SELECTED_ITEM_STYLE ){
-    _cur_tag_idx = ctrl_rstate_get(SELECTED_THEME_TAG_IDX)
     for (i=1; i<=THEME_TAG_L; i++){
         _tag = THEME_TAG[i]
         if (ctrl_sw_get( IS_FOCUS_TAG ) == true) _SELECTED_ITEM_STYLE = TH_THEME_PREVIEW_FOCUSE
-        if ( _cur_tag_idx == i) _tag = th(_SELECTED_ITEM_STYLE UI_TEXT_REV, _tag)
+        if ( CUR_TAG_IDX == i) _tag = th(_SELECTED_ITEM_STYLE UI_TEXT_REV, _tag)
         _data = _data " " _tag
     }
     return _data
 }
 
 # Using grid select
-function view_select(       _cur_tag_idx, _cur_tag, _data, _selected_theme_idx, _SELECTED_ITEM_STYLE, page_index, page_begin, i, j, _iter_item_idx, _data_item_idx , _item_text ){
-    _cur_tag_idx = ctrl_rstate_get(SELECTED_THEME_TAG_IDX)
-    _cur_tag     = THEME_TAG[ _cur_tag_idx ]
+function view_select(        _data, _selected_theme_idx, _SELECTED_ITEM_STYLE, page_index, page_begin, i, j, _iter_item_idx, _data_item_text , _item_text ){
     if (model_len == 0){
         _data = "We couldn’t find any data ..."
         _data = str_pad_left(_data, int(max_col_size/2), int(length(_data)/2))
@@ -51,22 +48,22 @@ function view_select(       _cur_tag_idx, _cur_tag, _data, _selected_theme_idx, 
         for (j=1; j<=view_body_col_num; j++) {
             _iter_item_idx = page_begin + j + ( i * view_body_col_num )
             if (_iter_item_idx > model_len) break
-            _data_item_idx = THEME_TAG_ITEM[ _cur_tag _iter_item_idx ]
-            _item_text = str_pad_right( _data_item_idx, max_theme_len, THEME_TAG_ITEM[ _data_item_idx L ] )
+            _data_item_text = THEME_TAG_ITEM[ CUR_TAG _iter_item_idx ]
+            _item_text = str_pad_right( _data_item_text, max_theme_len, THEME_TAG_ITEM[ _data_item_text L ] )
             if (ctrl_sw_get( IS_FOCUS_TAG ) == false) _SELECTED_ITEM_STYLE = TH_THEME_PREVIEW_FOCUSE
             if (_selected_theme_idx == _iter_item_idx) _item_text = th( _SELECTED_ITEM_STYLE TH_THEME_PREVIEW_SELECT, _item_text)
             _data = _data "    "  _item_text
         }
         _data = _data "\n"
     }
-    _data = _data "\n" ui_str_rep("-", max_col_size)
+    _data = _data "\n" ui_str_rep("─", max_col_size)
     return _data
 }
 
 function view_preview(             _selected_theme_idx, cur_theme){
     if (model_len == 0) return
     _selected_theme_idx = ctrl_rstate_get( SELECTED_THEME_IDX )
-    cur_theme = THEME_ARR[ _selected_theme_idx ]
+    cur_theme = THEME_TAG_ITEM[ CUR_TAG _selected_theme_idx ]
     return PREVIEW[cur_theme]
 }
 
@@ -101,14 +98,10 @@ function ctrl(char_type, char_value,        _selected, _selected_keypath ){
 # EndSection
 
 # Section: model
-function model_generate(    _filter,    i, l){
-    _cur_tag_idx = ctrl_rstate_get(SELECTED_THEME_TAG_IDX)
-    _cur_tag     = THEME_TAG[ _cur_tag_idx ]
-    model_len    = THEME_TAG_ITEM[ _cur_tag L ]
-    # for (i=1; i<=THEME_ARR_L; i++) {
-    #     if (THEME_ARR[i] = )
-    #     model[i] =
-    # }
+function model_generate(){
+    CUR_TAG_IDX = ctrl_rstate_get(SELECTED_THEME_TAG_IDX)
+    CUR_TAG     = THEME_TAG[ CUR_TAG_IDX ]
+    model_len   = THEME_TAG_ITEM[ CUR_TAG L ]
     ctrl_rstate_init( SELECTED_THEME_IDX, 1, model_len )
 }
 # EndSection
@@ -195,7 +188,7 @@ NR>1{
     idx = index(_cmd, ":")
     ctrl(substr(_cmd, 1, idx-1), substr(_cmd, idx+1))
     if (ctrl_sw_get( IS_FOCUS_TAG ) == true) model_generate()
-    get_theme_preview(THEME_ARR[ ctrl_rstate_get( SELECTED_THEME_IDX ) ])
+    get_theme_preview(THEME_TAG_ITEM[ CUR_TAG ctrl_rstate_get( SELECTED_THEME_IDX ) ])
     view()
 }
 # EndSection
@@ -204,7 +197,7 @@ NR>1{
 END {
     if ( exit_is_with_cmd() == true ) {
         _selected_theme_idx = ctrl_rstate_get( SELECTED_THEME_IDX )
-        cur_theme = THEME_ARR[ _selected_theme_idx ]
+        cur_theme = THEME_TAG_ITEM[ CUR_TAG _selected_theme_idx ]
         send_env( "___X_CMD_THEME_FINAL_COMMAND",    exit_get_cmd() )
         send_env( "___X_CMD_THEME_APP_FINAL_NAME",  cur_theme )
     }
