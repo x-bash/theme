@@ -78,7 +78,7 @@ fi
     # @example1: ___x_cmd_theme_style fg-red bold hello
 ###
 # Section: ___x_cmd_theme_style
-______x_cmd_theme_colorcode(){
+______x_cmd_theme_colorcode() {
     case "$1" in
         black)      printf 0           ;;
         red)        printf 1           ;;
@@ -97,7 +97,7 @@ ______x_cmd_theme_colorcode(){
 if [ -n "$ZSH_VERSION" ]; then
 autoload -U colors && colors
 
-______x_cmd_theme_setup_zsh_256color(){
+______x_cmd_theme_setup_zsh_256color() {
     typeset -AHg FG BG
     # shellcheck disable=SC3009
     for _color in {000..255}; do
@@ -108,7 +108,7 @@ ______x_cmd_theme_setup_zsh_256color(){
     unset _color
 }
 
-______x_cmd_theme_setup_zsh_basecolor(){
+______x_cmd_theme_setup_zsh_basecolor() {
     typeset -AHg fg_dim bg_dim fg_light bg_light
     for k in ${(k)color[(I)fg-*]}; do
         fg_dim[${k#fg-}]="%{[2;${color[$k]}m%}"
@@ -126,7 +126,7 @@ if [ -z $FG[100] ];then
     ______x_cmd_theme_setup_zsh_256color
 fi
 
-___x_cmd_theme_style(){
+___x_cmd_theme_style() {
     while [ $# -gt 0 ]; do
         case "$1" in
             bold)                                                   printf "%s" "%B"                                           ;;
@@ -150,13 +150,12 @@ ___x_cmd_theme_style(){
     done
 }
 
-_______x_cmd_theme_set_hightlight_color() {
+_______x_cmd_theme_set_complate_color() {
+    local color_code="${1:?Provide Color code e.g 32}"
     local x_cmd_theme_ls_color
-    # add seleted hightlight
-    x_cmd_theme_ls_color="ma=7;$color_code:$x_cmd_theme_ls_color:"
-    # add LS_COLORS hightlight
-    x_cmd_theme_ls_color="di=1;$color_code:$x_cmd_theme_ls_color:$LS_COLORS:"
-    # add advise complate hightlight
+    # add complate hightlight
+    x_cmd_theme_ls_color="ma=7;$color_code:$LS_COLORS:"
+    # add advise description hightlight
     x_cmd_theme_ls_color="=(#b) #([0-9]#*)(-- *)*=0=$color_code=1;31:$x_cmd_theme_ls_color:"
 
     # set zstyle
@@ -165,7 +164,7 @@ _______x_cmd_theme_set_hightlight_color() {
 
 else
 
-___x_cmd_theme_style(){
+___x_cmd_theme_style() {
     while [ $# -gt 0 ]; do
         case "$1" in
             bold)                                                   printf "${___X_CMD_COLOR_PRE}\033[1m${___X_CMD_COLOR_SUF}"                                             ;;
@@ -189,8 +188,8 @@ ___x_cmd_theme_style(){
     done
 }
 
-# TODO: bash hightlight
-_______x_cmd_theme_set_hightlight_color() {
+# TODO: bash... complate hightlight
+_______x_cmd_theme_set_complate_color() {
     :
 }
 
@@ -203,19 +202,33 @@ fi
  # @description: set theme hightlight color
  # @param $1:color => black | red | green | yellow | blue | magenta | cyan | white | rgb-${number}
 ###
-_______x_cmd_theme_set_log_color() { ___X_CMD_LOG_COLORIZED_INFO="\\033[$color_code"m; }
+_______x_cmd_theme_set_log_color() { ___X_CMD_LOG_COLORIZED_INFO="\\033[${1:?Provide Color code e.g 32}"m; }
+
+_______x_cmd_theme_set_ls_color() {
+    local color_code="${1:?Provide Color code e.g 32}"
+    # MacOS or FreeBSD
+    if [ "$(uname)" = "Darwin" ] || command -v freebsd-version; then
+        export CLICOLOR=1
+        export LSCOLORS=ExFxCxDxBxegedabagacad
+    fi
+    local _base="di=1;$color_code:ln=1;35:so=1;32:pi=1;33:ex=1;31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+    local _enter="*README.md=01;04;33:*Makefile=01;04;33:*Cargo.toml=01;04;33:*package.json=01;04;33:*Dockerfile=01;04;33:*pom.xml=01;04;33:*Gemfile=01;04;33:*Pipfile=01;04;33:*tsconfig.json=01;04;33:"
+    local _static_source="*.jpg=01;35:*.png=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.ico=01;35:"
+    local _zip_file="*.tar=01;31:*.tgz=01;31:*.tar.Z=01;31:*.tar.gz=01;31:*.xz=01;31:*.zip=01;31:*.7z=01;31:"
+    export LS_COLORS="$_base:$_enter:$_static_source:$_zip_file:$LS_COLORS"
+}
 
 ___x_cmd_theme_set_theme_color() {
-    : "${1:?Please provide correct primary color}"
     local color_code
-    color_code="$(______x_cmd_theme_colorcode "$1")"
+    color_code="$(______x_cmd_theme_colorcode "${1:?Please provide correct primary color}")"
     [ -z "$color_code" ] && printf "Error: $1" && return 1
     if [ "${1#rgb}" != "$1" ];then
         color_code="38;5;$color_code"
     else
         color_code="3$color_code"
     fi
-    _______x_cmd_theme_set_hightlight_color
-    _______x_cmd_theme_set_log_color
+    _______x_cmd_theme_set_ls_color "$color_code"
+    _______x_cmd_theme_set_complate_color "$color_code"
+    _______x_cmd_theme_set_log_color "$color_code"
 }
 # EndSection
