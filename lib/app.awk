@@ -193,7 +193,6 @@ NR==1{
 
 NR>1{
     if ( try_update_width_height( $0 ) )    next
-    # TODO: if it is update, recalculate the view.
 
     _cmd=$0
     gsub(/^C:/, "", _cmd)
