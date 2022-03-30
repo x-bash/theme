@@ -22,7 +22,7 @@ ___x_cmd_theme_app_mainloop_awk_exec(){
         -f "$___X_CMD_ROOT/awk/lib/ui.awk" \
         -f "$___X_CMD_ROOT/ui/lib/theme.awk" \
         -f "$___X_CMD_ROOT/ui/lib/share.awk" \
-        -f "./lib/app.awk"
-        # -f "$___X_CMD_ROOT/theme/lib/app.awk"
+        -f "$___X_CMD_ROOT/theme/lib/app.awk"
+        # -f "./lib/app.awk"
 }
 
