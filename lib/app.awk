@@ -20,7 +20,7 @@ function view_help(){
     return sprintf("%s", th_help_text( ctrl_help_get() ) )
 }
 
-function view_tag(         _cur_tag_idx, i, _tag, _data, _head_line, _foot_line, _head_line_item, _foot_line_item, _SELECTED_ITEM_STYLE ){
+function view_tag(         i, _tag, _data, _head_line, _foot_line, _head_line_item, _foot_line_item, _SELECTED_ITEM_STYLE ){
     for (i=1; i<=THEME_TAG_L; i++){
         _tag = THEME_TAG[i]
         _tag = str_pad_right( _tag, max_tag_len )
@@ -45,7 +45,7 @@ function view_select(        _data, _selected_theme_idx, _SELECTED_ITEM_STYLE, p
     if (model_len == 0){
         _data = "We couldn’t find any data ..."
         _data = str_pad_left(_data, int(max_col_size/2), int(length(_data)/2))
-        return th(TH_TABLE_UINFIND, _data)
+        return th(TH_DATA_UNFIND, _data)
     }
     view_page_item_num  = view_body_col_num * 3
     view_page_num       = int( ( model_len - 1 ) / view_page_item_num ) + 1
@@ -59,7 +59,7 @@ function view_select(        _data, _selected_theme_idx, _SELECTED_ITEM_STYLE, p
             _iter_item_idx = page_begin + j + ( i * view_body_col_num )
             if (_iter_item_idx > model_len) break
             _data_item_text = THEME_TAG_ITEM[ CUR_TAG _iter_item_idx ]
-            _item_text = str_pad_right( _data_item_text, max_theme_len, THEME_TAG_ITEM[ _data_item_text L ] )
+            _item_text = str_pad_right( _data_item_text, max_theme_len )
             if (ctrl_sw_get( IS_FOCUS_TAG ) == false) _SELECTED_ITEM_STYLE = TH_THEME_PREVIEW_FOCUSE
             if (_selected_theme_idx == _iter_item_idx) _item_text = th( _SELECTED_ITEM_STYLE TH_THEME_PREVIEW_SELECT, _item_text)
             _data = _data "    " _item_text
@@ -88,20 +88,20 @@ function ctrl(char_type, char_value,        _selected, _selected_keypath ){
     exit_if_detected( char_value, ",q," )
 
 
-    if (char_value == "h")                           return ctrl_help_toggle()
+    if (char_value == "h")                                return ctrl_help_toggle()
     if (ctrl_sw_get( IS_FOCUS_TAG ) == true) {
-        if (char_value == "LEFT")                    return ctrl_rstate_dec( SELECTED_THEME_TAG_IDX )
-        if (char_value == "RIGHT")                   return ctrl_rstate_inc( SELECTED_THEME_TAG_IDX )
-        if (char_value == "DN")                      return ctrl_sw_toggle( IS_FOCUS_TAG )
+        if (char_value == "LEFT")                         return ctrl_rstate_dec( SELECTED_THEME_TAG_IDX )
+        if (char_value == "RIGHT")                        return ctrl_rstate_inc( SELECTED_THEME_TAG_IDX )
+        if ( (char_value == "DN") && ( model_len > 0 ) )  return ctrl_sw_toggle( IS_FOCUS_TAG )
     } else {
-        if (char_value == "LEFT")                    return ctrl_rstate_dec( SELECTED_THEME_IDX )
-        if (char_value == "RIGHT")                   return ctrl_rstate_inc( SELECTED_THEME_IDX )
-        if (char_value == "DN" )                     return ctrl_rstate_add( SELECTED_THEME_IDX, + view_body_col_num )
+        if (char_value == "LEFT")                         return ctrl_rstate_dec( SELECTED_THEME_IDX )
+        if (char_value == "RIGHT")                        return ctrl_rstate_inc( SELECTED_THEME_IDX )
+        if (char_value == "DN" )                          return ctrl_rstate_add( SELECTED_THEME_IDX, + view_body_col_num )
         if (char_value == "UP") {
             if (ctrl_rstate_get( SELECTED_THEME_IDX ) <= view_body_col_num) return ctrl_sw_toggle( IS_FOCUS_TAG )
             return ctrl_state_add( SELECTED_THEME_IDX, - view_body_col_num )
         }
-        if (char_value == "ENTER" )                    return exit_with_elegant( char_value )
+        if (char_value == "ENTER" )                       return exit_with_elegant( char_value )
     }
 }
 
@@ -126,7 +126,7 @@ BEGIN{
 
 
 function get_theme_arr(         _cmd, i, _theme, _line, _len, _max_len){
-    _cmd = "tar -f " THEME_TAR_PATH " -t style/"
+    _cmd = "tar -f " THEME_TAR_PATH " -t style/ 2>/dev/null"
     for (i=1; _cmd | getline _line; i++) {
         _theme = substr(_line, 7)
         if ( _theme == "" ) continue
@@ -138,8 +138,9 @@ function get_theme_arr(         _cmd, i, _theme, _line, _len, _max_len){
 }
 
 function get_theme_tag(         _cmd, i, _tag, _line, _theme){
-    _cmd = "tar -f " THEME_TAR_PATH " -O -x index.yml"
-    # _cmd = "cat ../xcmd/theme/ui.yml"
+    _cmd = "tar -f " THEME_TAR_PATH " -O -x index.yml 2>/dev/null"
+    # _cmd = "cat ../xcmd/theme/ui.yml 2>/dev/null"
+    THEME_TAG_L = 0
     while ( _cmd | getline _line) {
         if ( _line ~ /^-/ ) {
             THEME_TAG_ITEM[ _tag L ] = i
@@ -164,7 +165,7 @@ function get_theme_preview( theme,          _cmd, i, c, _ROW_LINE, _line){
     if (theme == "") return
     c = PREVIEW[theme]
     if ( c == "" ) {
-        _cmd = "tar -f " THEME_TAR_PATH " -O -x style-preview/" theme
+        _cmd = "tar -f " THEME_TAR_PATH " -O -x style-preview/" theme " 2>/dev/null"
         for (i=1; _cmd | getline _line; i++) {
             c = c "\n" _line
             ++_ROW_LINE
