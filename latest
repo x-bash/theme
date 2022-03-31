@@ -44,6 +44,17 @@ ___x_cmd_theme_which(){
     fi
 }
 
+___x_cmd_theme_which_tgz(){
+    local cache="$___X_CMD_ROOT/.tmp/theme/theme.tgz"
+    if ! ___x_cmd_curl_gitx x-cmd theme main "dist/theme.tgz" "$cache"; then
+        if [ ! -f "$cache" ]; then
+            x:error "Unaviable theme.tgz. Unable to fetch theme.tgz."
+            return 1
+        fi
+    fi
+    printf "%s" "$cache"
+}
+
 # EndSection
 
 # Section: subcmd
@@ -71,7 +82,7 @@ A
     local name="${1:-ys}"
     # TODO: replace xrc load control to ___X_CMD_ROOT
     ___x_cmd_theme_control_try "$name" && \
-        x boot rc add "x-theme" "xrc theme && ___x_cmd_theme_control try $name"
+        x boot rc add "x-theme" "xrc theme && ___x_cmd_theme_control_try_inner $name"
 }
 
 ___x_cmd_theme_control_unset(){
@@ -105,51 +116,33 @@ options:
 A
     param:run
 
+    ___x_cmd_theme_control_try_inner "$1"
+}
+
+___x_cmd_theme_control_try_inner(){
     local name="${1}"
     case "$name" in
-        ys|"")
-            ___x_cmd_theme_load_format "$(xrc which theme/lib/ys)"
-            return
-            ;;
-        */*)
-            ___x_cmd_theme_load_format "$(xrc which "$name")"
-            return
-            ;;
+        ys|"")      ___x_cmd_theme_load_format "$(xrc which theme/lib/ys)" ;;
+        */*)        ___x_cmd_theme_load_format "$(xrc which "$name")" ;;
+        *)
+            if [ ! -f "$___X_CMD_ROOT_TMP/theme/style/$name" ]; then
+                local __tgz
+                __tgz="$(___x_cmd_theme_which_tgz)" || return 1
+
+                local tmp_style_dir="$___X_CMD_ROOT_TMP/theme"
+                [ ! -d "$tmp_style_dir" ] && mkdir -p "$tmp_style_dir"
+
+                local _src_code
+                # echo tar xf "$__tgz" -C "$tmp_style_dir" "style/$name"
+                if ! tar xf "$__tgz" -C "$tmp_style_dir" "style/$name" 2>/dev/null; then
+                    printf "\033[31m%s\033[33m%s\n%s \033[1;36m%s\033[0m\n" \
+                        "[x-cmd]: Not found theme in cache." " Check the theme name is exist." \
+                        "Or you can try run command to update cache." "\`x theme ls\`"
+                    return 1
+                fi
+            fi
+            ___x_cmd_theme_load_format "$___X_CMD_ROOT_TMP/theme/style/$name"
     esac
-    local _cache_source="$___X_CMD_ROOT/.tmp/theme/theme.tgz"
-    if [ -f "$_cache_source" ];then
-        awk -v name="$name" '
-$2==name{ code=1; exit 0; };
-END{
-    if (code==1) exit 0
-    else exit 1
-}' <<A
-"$(tar xf "$_cache_source" -O index.yml)"
-A
-
-    else
-        ___x_cmd_theme_control_ls | awk -v name="$name" '
-$1==name{ code=1; exit 0; };
-END{
-    if (code==1) exit 0
-    else exit 1
-}'
-    fi
-
-    local code=$?
-    if [ "$code" != 0 ]; then
-        printf "\033[31m%s\033[33m%s\n%s \033[1;36m%s\033[0m\n" \
-            "[x-cmd]: Not found theme in cache." " Check the theme name is exist." \
-            "Or you can try run command to update cache." "\`x theme ls\`"
-        return $code
-    fi
-
-    local fp
-    if fp="$(___x_cmd_theme_which "$name")"; then
-        ___x_cmd_theme_load_format "$fp" "style/$name"
-        return 0
-    fi
-    return 1
 }
 
 ___x_cmd_theme_control_zinit(){
