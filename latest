@@ -58,6 +58,9 @@ ___x_cmd_theme_which_tgz(){
             return 1
         fi
     fi
+    if [ -n "$___X_CMD_HTTPGET_UPDATED" ]; then
+        x rmrf "$___X_CMD_ROOT_TMP/theme"
+    fi
     printf "%s" "$cache"
 }
 
