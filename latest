@@ -39,14 +39,14 @@ ___x_cmd_theme_which(){
         name="style/$name"
     fi
 
-    if ___x_cmd_curl_gitx x-cmd theme main "dist/theme.tgz" "$cache" "$expiration"; then
+    if ___x_cmd_httpget_gitx x-cmd theme main "dist/theme.tgz" "$cache" "$expiration"; then
         printf "%s" "$cache"
     fi
 }
 
 ___x_cmd_theme_which_tgz(){
     local cache="$___X_CMD_ROOT/.tmp/theme/theme.tgz"
-    if ! ___x_cmd_curl_gitx x-cmd theme main "dist/theme.tgz" "$cache"; then
+    if ! ___x_cmd_httpget_gitx x-cmd theme main "dist/theme.tgz" "$cache"; then
         if [ ! -f "$cache" ]; then
             x:error "Unaviable theme.tgz. Unable to fetch theme.tgz."
             return 1
@@ -57,7 +57,7 @@ ___x_cmd_theme_which_tgz(){
 
 # EndSection
 
-# Section: subcmd
+
 ___x_cmd_theme_control_ls() {
     param:void
     local fp
@@ -68,6 +68,7 @@ A
     fi
 }
 
+# Section: use try
 xrc:mod:lib theme   lib   style
 
 ___x_cmd_theme_control_use(){
@@ -81,7 +82,7 @@ A
 
     local name="${1:-ys}"
     # TODO: replace xrc load control to ___X_CMD_ROOT
-    ___x_cmd_theme_control_try "$name" && \
+    ___x_cmd_theme_control_try_inner "$name" && \
         x boot rc add "x-theme" "xrc theme && ___x_cmd_theme_control_try_inner $name"
 }
 
@@ -94,17 +95,6 @@ ___x_cmd_theme_control_unset(){
     fi
     x boot rc del x-theme
     printf "\033[32m%s \033[1;33m%s\033[0m \n" "Unset the theme successfully!" "Now you can restart your terminal."
-}
-
-___x_cmd_theme_control_app(){
-    param:void
-    xrc theme/lib/app
-    local ___X_CMD_THEME_FINAL_COMMAND
-    local ___X_CMD_THEME_APP_FINAL_NAME
-    ___x_cmd_theme_app
-    if [ "$___X_CMD_THEME_FINAL_COMMAND" = "ENTER" ]; then
-        ___x_cmd_theme_control_use "$___X_CMD_THEME_APP_FINAL_NAME"
-    fi
 }
 
 ___x_cmd_theme_control_try(){
@@ -144,7 +134,9 @@ ___x_cmd_theme_control_try_inner(){
             ___x_cmd_theme_load_format "$___X_CMD_ROOT_TMP/theme/style/$name"
     esac
 }
+# EndSection
 
+# Section: zsh
 ___x_cmd_theme_control_zinit(){
     param:void
     local _have_loaded_theme
@@ -164,6 +156,7 @@ ___x_cmd_theme_control_use_plugin() {
     xrc:mod theme/lib/third-party/"$1"/"$1".plugin.zsh
     x boot rc add "x-plugin-$1" "[ -n \"\$ZSH_VERSION\" ] && xrc:mod theme/lib/third-party/$1/$1.plugin.zsh"
 }
+# EndSection
 
 ___x_cmd_theme_control_font() {
     param:void
@@ -185,37 +178,23 @@ ___x_cmd_theme_control_font() {
     fi
     local cache="$_font_dir/$_font_name"
     local expiration=""
-    ___x_cmd_curl_gitx x-cmd theme main "font/$_font_name" "$cache" "$expiration"
+    ___x_cmd_httpget_gitx x-cmd theme main "font/$_font_name" "$cache" "$expiration"
     if command -v fc-cache ; then
         printf "%s\n" "[x-cmd]: Resetting font cache, this may take a moment..."
         command fc-cache -f "$_font_dir"
     fi
 }
-
-# Best efforts to retrieve background color.
-# Works: terminal app in macos, ...
-# Now works: vscode, ...
-# Reference:
-# 1. https://unix.stackexchange.com/questions/172548/how-to-determine-the-current-color-of-the-console-output
-# 2. https://newbedev.com/how-to-determine-a-terminal-s-background-color
-___x_cmd_theme_control_get_current_background_color(){
-    local oldstty
-    oldstty=$(stty -g)
-    local Ps=${1:-11}
-
-    stty raw -echo min 0 time 0
-    printf "\033]$Ps;?\033\\"
-    sleep 0.00000001
-
-    local answer
-    read -r answer
-    local result
-    result=${answer#*;}
-    stty "$oldstty"
-    # Remove escape at the end.
-    printf "%s" "$result" | sed 's/[^rgb:0-9a-f/]\+$//'
-}
-
 # EndSection
+
+___x_cmd_theme_control_app(){
+    param:void
+    xrc theme/lib/app
+    local ___X_CMD_THEME_FINAL_COMMAND
+    local ___X_CMD_THEME_APP_FINAL_NAME
+    ___x_cmd_theme_app
+    if [ "$___X_CMD_THEME_FINAL_COMMAND" = "ENTER" ]; then
+        ___x_cmd_theme_control_use "$___X_CMD_THEME_APP_FINAL_NAME"
+    fi
+}
 
 xrc setmain ___x_cmd_theme_control
