@@ -223,7 +223,6 @@ _______x_cmd_theme_set_ls_color() {
 ___x_cmd_theme_set_theme_color() {
     local color_code
     color_code="$(______x_cmd_theme_colorcode "${1:?Please provide correct primary color}")"
-    [ -z "$color_code" ] && printf "Error: $1" && return 1
     if [ "${1#rgb}" != "$1" ];then
         color_code="38;5;$color_code"
     else
