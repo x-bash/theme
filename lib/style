@@ -1,5 +1,4 @@
-# shellcheck shell=sh
-# shellcheck disable=SC2039,SC3044,SC2154,SC1087,SC2128,SC2144,SC2059,SC2296,SC2296,SC3054,SC2034
+# shellcheck shell=sh disable=SC2039,SC3044,SC3043
 
 # Section: theme global variable setup
 ___X_CMD_THEME_NEWLINE="
