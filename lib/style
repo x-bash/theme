@@ -19,7 +19,7 @@ ___X_CMD_THEME_NEWLINE="
 #     esac
 # }
 
-______x_cmd_theme___set_color_code() {
+___x_cmd_theme___set_color_code() {
     case "$1" in
         black)      color_code=0           ;;
         red)        color_code=1           ;;
@@ -33,12 +33,6 @@ ______x_cmd_theme___set_color_code() {
     esac
 }
 
-
-if [ -n "$ZSH_VERSION" ]; then
-    xrc:mod theme/lib/style_zsh
-else
-    xrc:mod theme/lib/style_posix
-fi
 # EndSection
 
 # Section: NO_COLOR flag
@@ -59,6 +53,10 @@ if [ -n "${NO_COLOR}" ]; then
      }
     ___x_cmd_theme_set_theme_color() { :; }
     return 0
+elif [ -n "$ZSH_VERSION" ]; then
+    xrc:mod theme/lib/style_zsh
+else
+    xrc:mod theme/lib/style_posix
 fi
 # EndSection
 
@@ -71,10 +69,26 @@ fi
 
 
 # Section: ___x_cmd_theme_set_theme_color
+
 ###
  # @description: set theme hightlight color
  # @param $1:color => black | red | green | yellow | blue | magenta | cyan | white | rgb-${number}
 ###
+
+___x_cmd_theme_set_theme_color() {
+    local color_code
+    ___x_cmd_theme___set_color_code "${1:?Please provide correct primary color}"
+    if [ "${1#rgb}" != "$1" ];then
+        color_code="38;5;$color_code"
+    else
+        color_code="3$color_code"
+    fi
+    ___X_CMD_THEME_COLOR_CODE="$color_code"
+    _______x_cmd_theme_set_ls_color "$color_code"
+    _______x_cmd_theme_set_complate_color "$color_code"
+    _______x_cmd_theme_set_log_color "$color_code"
+}
+
 _______x_cmd_theme_set_log_color() { ___X_CMD_LOG_COLORIZED_INFO="\\033[${1:?Provide Color code e.g 32}"m; }
 
 _______x_cmd_theme_set_ls_color() {
@@ -100,17 +114,5 @@ _______x_cmd_theme_set_ls_color() {
     fi
 }
 
-___x_cmd_theme_set_theme_color() {
-    local color_code
-    ______x_cmd_theme___set_color_code "${1:?Please provide correct primary color}"
-    if [ "${1#rgb}" != "$1" ];then
-        color_code="38;5;$color_code"
-    else
-        color_code="3$color_code"
-    fi
-    ___X_CMD_THEME_COLOR_CODE="$color_code"
-    _______x_cmd_theme_set_ls_color "$color_code"
-    _______x_cmd_theme_set_complate_color "$color_code"
-    _______x_cmd_theme_set_log_color "$color_code"
-}
+
 # EndSection
