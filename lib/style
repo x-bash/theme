@@ -17,7 +17,6 @@ ___x_cmd_theme___set_color_code() {
         rgb-*)      color_code="${1#rgb-}" ;;
     esac
 }
-
 # EndSection
 
 # Section: NO_COLOR flag
@@ -52,16 +51,12 @@ else
 fi
 # EndSection
 
-
-
-
 # Section: ___x_cmd_theme_set_theme_color
 
 ###
  # @description: set theme hightlight color
  # @param $1:color => black | red | green | yellow | blue | magenta | cyan | white | rgb-${number}
 ###
-
 ___x_cmd_theme_set_theme_color() {
     local color_code
     ___x_cmd_theme___set_color_code "${1:?Please provide correct primary color}"
@@ -100,6 +95,4 @@ _______x_cmd_theme_set_ls_color() {
         export LS_COLORS="${LS_COLORS}${_base}${_enter}${_static_source}${_compressed_source}"
     fi
 }
-
-
 # EndSection
