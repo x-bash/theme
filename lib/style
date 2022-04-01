@@ -5,20 +5,6 @@
 ___X_CMD_THEME_NEWLINE="
 "
 
-# ______x_cmd_theme_colorcode() {
-#     case "$1" in
-#         black)      printf 0           ;;
-#         red)        printf 1           ;;
-#         green)      printf 2           ;;
-#         yellow)     printf 3           ;;
-#         blue)       printf 4           ;;
-#         magenta)    printf 5           ;;
-#         cyan)       printf 6           ;;
-#         white)      printf 7           ;;
-#         rgb-*)      printf "${1#rgb-}" ;;
-#     esac
-# }
-
 ___x_cmd_theme___set_color_code() {
     case "$1" in
         black)      color_code=0           ;;
