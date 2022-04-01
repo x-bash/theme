@@ -40,7 +40,7 @@ ___x_cmd_theme_control_ls() {
 
 ___x_cmd_theme_which(){
     local filename="${1:?Provide name}"
-    if [ ! -f "$___X_CMD_ROOT_TMP/theme/$filename" ]; then
+    if [ ! -f "$___X_CMD_ROOT_TMP/theme/$filename" ] || [ "$filename" = "index.yml" ]; then
         local __tgz
         __tgz="$(___x_cmd_theme_which_tgz)" || return 1
 
