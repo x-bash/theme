@@ -1,3 +1,4 @@
+# shellcheck shell=sh   disable=SC2039,SC3043
 
 # Section: variable
 ___X_CMD_THEME_USER='\u'

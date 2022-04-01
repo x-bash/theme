@@ -1,3 +1,4 @@
+# shellcheck disable=all
 
 # Section: variable
 ___X_CMD_THEME_USER='%n'
