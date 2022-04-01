@@ -24,6 +24,13 @@ ___x_cmd_theme___set_color_code() {
 ## Enable our easy to read Colour Flags as long as the NO_COLOR Env Variable is set.
 ## NOTE: the NO_COLOR env variable is from: https://no-color.org/
 if [ -n "${NO_COLOR}" ]; then
+
+    ###
+        # @description: set up color
+        # @param: $color | bg-$color | bfg $color | ibg $color | bold | underline | reset
+        # @param: $color => black | red | green | yellow | blue | magenta | cyan | white
+        # @example1: ___x_cmd_theme_style fg-red bold hello
+    ###
     ___x_cmd_theme_style() {
         while [ $# -gt 0 ]; do
             case "$1" in
@@ -45,12 +52,7 @@ else
 fi
 # EndSection
 
-###
-    # @description: set up color
-    # @param: $color | bg-$color | bfg $color | ibg $color | bold | underline | reset
-    # @param: $color => black | red | green | yellow | blue | magenta | cyan | white
-    # @example1: ___x_cmd_theme_style fg-red bold hello
-###
+
 
 
 # Section: ___x_cmd_theme_set_theme_color
