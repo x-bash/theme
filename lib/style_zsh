@@ -20,6 +20,7 @@ ___X_CMD_THEME_FULL_HOST='%M'
 
 # EndSection
 
+# Section: init
 # zsh https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Visual-effects
 
 autoload -U colors && colors
@@ -52,6 +53,7 @@ ______x_cmd_theme_setup_zsh_basecolor
 if [ -z $FG[100] ];then
     ______x_cmd_theme_setup_zsh_256color
 fi
+# EndSection
 
 ___x_cmd_theme_style() {
     while [ $# -gt 0 ]; do
