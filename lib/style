@@ -1,6 +1,8 @@
-# shellcheck shell=sh disable=SC2039,SC3044,SC3043
+# shellcheck shell=sh disable=SC2039,SC3044,SC3043,SC2034
 
 # Section: theme global variable setup
+xrc:mod:lib theme     style_variable
+
 ___X_CMD_THEME_NEWLINE="
 "
 
@@ -19,17 +21,10 @@ ___x_cmd_theme___set_color_code() {
 }
 # EndSection
 
-# Section: NO_COLOR flag
+# Section: style setup
 ## Enable our easy to read Colour Flags as long as the NO_COLOR Env Variable is set.
 ## NOTE: the NO_COLOR env variable is from: https://no-color.org/
 if [ -n "${NO_COLOR}" ]; then
-
-    ###
-        # @description: set up color
-        # @param: $color | bg-$color | bfg $color | ibg $color | bold | underline | reset
-        # @param: $color => black | red | green | yellow | blue | magenta | cyan | white
-        # @example1: ___x_cmd_theme_style fg-red bold hello
-    ###
     ___x_cmd_theme_style() {
         while [ $# -gt 0 ]; do
             case "$1" in
@@ -43,11 +38,9 @@ if [ -n "${NO_COLOR}" ]; then
         done
      }
     ___x_cmd_theme_set_theme_color() { :; }
-    return 0
 elif [ -n "$ZSH_VERSION" ]; then
-    xrc:mod:lib     style_zsh       style_set_theme_color
+    xrc:mod:lib theme     style_zsh       style_set_theme_color
 else
-    xrc:mod:lib     style_posix     style_set_theme_color
+    xrc:mod:lib theme     style_posix     style_set_theme_color
 fi
-
 # EndSection
