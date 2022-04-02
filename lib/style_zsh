@@ -1,25 +1,5 @@
 # shellcheck disable=all
 
-# Section: variable
-___X_CMD_THEME_USER='%n'
-
-# Path
-___X_CMD_THEME_PATH='%1d'
-___X_CMD_THEME_FULL_PATH='%~'
-
-# Date
-___X_CMD_THEME_DATE='%D';
-___X_CMD_THEME_TIME_H_M_S='%*';
-___X_CMD_THEME_TIME_H12_M_S='%D{%L:%M:%S}';
-___X_CMD_THEME_TIME_H_M='%T';
-___X_CMD_THEME_TIME_H12_M='%@';
-
-# Host
-___X_CMD_THEME_HOST='%m'
-___X_CMD_THEME_FULL_HOST='%M'
-
-# EndSection
-
 # Section: init
 # zsh https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Visual-effects
 
@@ -55,6 +35,10 @@ if [ -z $FG[100] ];then
 fi
 # EndSection
 
+###
+  # @description: set up style color
+  # @example: ___x_cmd_theme_style fg-red bold hello world
+###
 ___x_cmd_theme_style() {
     while [ $# -gt 0 ]; do
         case "$1" in
