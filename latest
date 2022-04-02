@@ -32,13 +32,13 @@ A
 ___x_cmd_theme_control_ls() {
     param:void
 
-    local tmp
-    tmp="$(___x_cmd_theme_which index.yml)" && awk 'op==1{ if ($0 ~ /^-/) exit(0); print $2; };  op==0{  if ($2 == "all") op=1; }' <"$tmp"
+    local filepath
+    ___x_cmd_theme___which___filepath index.yml && awk 'op==1{ if ($0 ~ /^-/) exit(0); print $2; };  op==0{  if ($2 == "all") op=1; }' <"$filepath"
 
     # tar xf "$__tgz" -O index.yml 2>/dev/null | awk 'op==1{ if ($0 ~ /^-/) exit(0); print $2; };  op==0{  if ($2 == "all") op=1; }'
 }
 
-___x_cmd_theme_which(){
+___x_cmd_theme___which___filepath(){
     local filename="${1:?Provide name}"
 
     local tmp_style_dir="$___X_CMD_ROOT_TMP/theme/tgz"
@@ -56,7 +56,7 @@ ___x_cmd_theme_which(){
             return 1
         fi
     fi
-    printf "%s" "$tmp_style_dir/$filename"
+    filepath="$tmp_style_dir/$filename"
 }
 
 ___x_cmd_theme___which_tgz___tgzfilepath(){
@@ -120,10 +120,10 @@ A
 ___x_cmd_theme_control_try_inner(){
     local name="${1}"
     case "$name" in
-        ys|"")          ___x_cmd_theme_load_format "$(xrc which theme/lib/ys)" ;;
+        ys|"")          ___x_cmd_theme_load_format "$___X_CMD_ROOT_MOD/theme/lib/ys" ;;
         */*)            ___x_cmd_theme_load_format "$(xrc which "$name")" ;;
-        *)      name="$(___x_cmd_theme_which "style/$name")" && \
-                        ___x_cmd_theme_load_format "$name"
+        *)      local filepath; ___x_cmd_theme___which___filepath "style/$name" && \
+                        ___x_cmd_theme_load_format "$filepath"
     esac
 }
 # EndSection
