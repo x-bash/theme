@@ -40,11 +40,12 @@ ___x_cmd_theme_control_ls() {
 
 ___x_cmd_theme_which(){
     local filename="${1:?Provide name}"
-    if [ ! -f "$___X_CMD_ROOT_TMP/theme/$filename" ] || [ "$filename" = "index.yml" ]; then
+
+    local tmp_style_dir="$___X_CMD_ROOT_TMP/theme/tgz"
+    if [ ! -f "$tmp_style_dir/$filename" ]; then
         local __tgz
         __tgz="$(___x_cmd_theme_which_tgz)" || return 1
 
-        local tmp_style_dir="$___X_CMD_ROOT_TMP/theme/tgz"
         [ ! -d "$tmp_style_dir" ] && mkdir -p "$tmp_style_dir"
 
         local _src_code
@@ -55,7 +56,7 @@ ___x_cmd_theme_which(){
             return 1
         fi
     fi
-    printf "%s" "$___X_CMD_ROOT_TMP/theme/tgz/$filename"
+    printf "%s" "$tmp_style_dir/$filename"
 }
 
 ___x_cmd_theme_which_tgz(){
