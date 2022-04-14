@@ -206,11 +206,7 @@ ___x_cmd_theme_load_format() {
         ___X_CMD_THEME_NAME='ys'
     fi
 
-    if [ "$#" -gt 1 ];then
-        eval "$(tar xf "$1" -O "${2:?Provide theme zipsource path}")"
-    else
-        . "${1:?Provide theme file}"
-    fi
+    . "${1:?Provide theme file}"
 
     # TODO: config which envrinonments to pass
 
