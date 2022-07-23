@@ -24,8 +24,9 @@ A
     param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_theme_control _param_help_doc
-        return 0
+        # ___x_cmd_theme_control _param_help_doc
+        ___x_cmd_theme_control_app "$@"
+        return
     fi
 
     "___x_cmd_theme_control_${PARAM_SUBCMD}" "$@"
